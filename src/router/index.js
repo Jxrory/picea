@@ -11,6 +11,11 @@ const routes = [
     name: "TODO",
     component: () => import("@/views/todo"),
   },
+  {
+    path: "/config",
+    name: "Config",
+    component: () => import("@/views/config"),
+  },
 ];
 
 const router = createRouter({
