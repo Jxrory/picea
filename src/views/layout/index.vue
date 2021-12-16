@@ -4,18 +4,21 @@
 
 <script>
 export default {
-  name: "APP",
+  name: "Layout",
 };
 </script>
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
 
+html,
+body,
 #app {
   @include full-all;
+  margin: 0;
+}
 
-  position: absolute;
-
+#app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
