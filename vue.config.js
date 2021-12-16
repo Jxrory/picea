@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -10,7 +10,7 @@ module.exports = {
     // it can be accessed in index.html to inject the correct title.
     resolve: {
       alias: {
-        '@': resolve('src'),
+        "@": resolve("src"),
       },
     },
   },
