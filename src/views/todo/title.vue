@@ -1,7 +1,7 @@
 <template>
   <div :class="tag">
     <el-icon color="#fff"><list /></el-icon>
-    <span class="name">{{ title }}</span>
+    <span class="title-name">{{ title }}</span>
     <div>
       <el-input
         v-if="isEditStatus"
@@ -10,7 +10,7 @@
         maxlength="200"
         width="100%"
         placeholder="请在这里输入需要处理的事项"
-        size="mini"
+        size="small"
         @keyup.enter="saveHandler"
       />
     </div>
@@ -68,19 +68,22 @@ export default {
 </script>
 
 <style lang="scss" scope>
+@import "~@/styles/mixin.scss";
+
 .quadrant-title-common {
-  height: 100%;
-  width: 100%;
+  @include full-all;
 
+  // 设置上面边两个角4px的圆弧
   border-radius: 4px 4px 0 0;
-  box-sizing: border-box;
 
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  // 布局: 标题栏 4 个部件直接的布局方式
   display: grid;
   grid-template-columns: 16px 1fr 5fr 25px;
   align-items: center;
-
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .quadrant {
@@ -108,11 +111,12 @@ export default {
     background-color: rgba(121, 170, 28, 0.7);
   }
 
-  .name {
-    margin-left: 5px;
+  .title-name {
     justify-self: start;
+    margin-left: 5px;
 
     font-size: 0.9em;
+    color: #fff;
   }
 
   .edit-btn {

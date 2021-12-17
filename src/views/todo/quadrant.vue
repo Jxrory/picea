@@ -1,6 +1,6 @@
 <template>
   <div class="quadrant">
-    <Title :tag="tag" title="重要且紧急"></Title>
+    <Title :tag="tag" :title="title"></Title>
     <div class="body"></div>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
   components: {
     Title,
   },
-  props: ["tag"],
+  props: ["tag", "title", "todoList"],
 };
 </script>
 
@@ -23,17 +23,17 @@ export default {
 .quadrant {
   @include full-all;
 
-  border-radius: 4px;
-
-  background-color: rgba($color: #fff, $alpha: 0.6);
-
-  // 布局
+  // 布局: 单象限内 title & body 上下布局
   display: grid;
-  grid-template-rows: 34px 5fr;
+  // title 高度 34px, 剩下的是 body 内容
+  grid-template-rows: 34px 1fr;
 
   .body {
-    width: 100%;
-    height: 100%;
+    @include full-all;
+
+    border-radius: 0 0 4px 4px; // 设置下边两个角4px的圆弧
+
+    background-color: rgba($color: #fff, $alpha: 0.6);
   }
 }
 </style>

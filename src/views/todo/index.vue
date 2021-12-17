@@ -4,6 +4,8 @@
       v-for="quadrant in quadrants"
       :key="quadrant.tag"
       :tag="quadrant.tag"
+      :title="quadrant.title"
+      :todoList="quadrant.todoList"
     ></Quadrant>
   </div>
 </template>
@@ -22,22 +24,22 @@ export default {
         {
           tag: "a",
           title: "重要且紧急",
-          sons: [],
+          todoList: [],
         },
         {
           tag: "b",
           title: "重要不紧急",
-          sons: [],
+          todoList: [],
         },
         {
           tag: "c",
           title: "紧急不重要",
-          sons: [],
+          todoList: [],
         },
         {
           tag: "d",
           title: "不重要不紧急",
-          sons: [],
+          todoList: [],
         },
       ],
     };
@@ -51,9 +53,11 @@ export default {
 .todo-main-box {
   @include full-all;
 
-  padding: 15px; // 待商榷
+  // 设置 padding 后, 会导致 box 溢出
   box-sizing: border-box;
+  padding: 15px;
 
+  // 布局: 4个象限的布局
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
