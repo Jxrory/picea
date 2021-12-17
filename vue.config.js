@@ -4,8 +4,9 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
-import Components, { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-import AutoImport from require('unplugin-auto-import/webpack')
+const AutoImport = require("unplugin-auto-import/webpack");
+const Components = require("unplugin-vue-components/webpack");
+const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
 
 module.exports = {
   configureWebpack: {

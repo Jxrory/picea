@@ -59,5 +59,7 @@ export default {
   grid-template-rows: 1fr 1fr;
   grid-gap: 20px 20px; // 配置后超出范围
   place-items: center center;
+
+  background-image: url("~@/assets/bg/3.jpg");
 }
 </style>

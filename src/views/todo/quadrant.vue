@@ -1,6 +1,6 @@
 <template>
   <div class="quadrant">
-    <Title :tag="tag" title="test"></Title>
+    <Title :tag="tag" title="重要且紧急"></Title>
     <div class="body"></div>
   </div>
 </template>
