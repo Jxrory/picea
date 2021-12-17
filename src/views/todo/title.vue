@@ -14,8 +14,8 @@ export default {
 
 <style lang="scss">
 .quadrant-title-common {
-  height: 34px;
-  widows: 100%;
+  height: 100%;
+  width: 100%;
 
   border-radius: 4px 4px 0 0;
 }
