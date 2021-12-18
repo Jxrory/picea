@@ -5,9 +5,12 @@
       <!-- 不要添加 [tag="transition-group"], 存在 bug 卡了半天... -->
       <draggable v-model="todoList" group="todoList" item-key="id">
         <template #item="{ element }">
-          <div class="item" :key="element.id">{{ element.name }}</div>
+          <Thing :content="element"></Thing>
         </template>
       </draggable>
+      <div v-if="!todoList || todoList.length === 0" class="empty">
+        恭喜你！已完成了所有待办
+      </div>
     </div>
   </div>
 </template>
@@ -16,15 +19,17 @@
 // 拖拽功能组件
 import draggable from "vuedraggable";
 
-// 内部组件 Title
+// 内部组件 Title & Thing
 import Title from "./title";
+import Thing from "./thing";
 
 export default {
   name: "Quadrant",
 
   components: {
-    Title,
     draggable,
+    Title,
+    Thing,
   },
 
   emits: ["moveData"],
@@ -89,15 +94,7 @@ export default {
 
     border-radius: 0 0 4px 4px; // 设置下边两个角4px的圆弧
 
-    background-color: rgba($color: #fff, $alpha: 0.6);
-
-    .item {
-      width: 100%;
-
-      // 测试使用
-      margin-top: 3px;
-      background-color: salmon;
-    }
+    background-color: #f2f4f5;
   }
 }
 </style>
