@@ -27,7 +27,6 @@ export default {
           labelDetail: "重要且紧急",
           todoList: [
             {
-              id: 1,
               label: "a",
               start: 1639567447,
               end: 0,
@@ -45,7 +44,6 @@ export default {
           labelDetail: "重要不紧急",
           todoList: [
             {
-              id: 2,
               label: "b",
               start: 1639789058,
               end: 0,
@@ -57,7 +55,6 @@ export default {
               order: 1639789058,
             },
             {
-              id: 3,
               label: "b",
               start: 1639789051,
               end: 0,
@@ -80,7 +77,6 @@ export default {
           labelDetail: "不重要不紧急",
           todoList: [
             {
-              id: 4,
               label: "d",
               start: 1639788896,
               end: 0,
