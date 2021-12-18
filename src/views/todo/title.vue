@@ -33,11 +33,13 @@ import { Edit, List, Close } from "@element-plus/icons-vue";
 
 export default {
   name: "Title",
+
   components: {
     Edit,
     List,
     Close,
   },
+
   props: ["title", "tag"],
   data() {
     return {
@@ -47,6 +49,7 @@ export default {
       input: "",
     };
   },
+
   methods: {
     // 数据初始化
     dataInit() {

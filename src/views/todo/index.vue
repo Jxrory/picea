@@ -3,9 +3,8 @@
     <Quadrant
       v-for="quadrant in quadrants"
       :key="quadrant.tag"
-      :tag="quadrant.tag"
-      :title="quadrant.title"
-      :todoList="quadrant.todoList"
+      :quadrantData="quadrant"
+      @moveData="moveData"
     ></Quadrant>
   </div>
 </template>
@@ -15,34 +14,75 @@ import Quadrant from "./quadrant.vue";
 
 export default {
   name: "TODO",
+
   components: {
     Quadrant,
   },
+
   data() {
     return {
       quadrants: [
         {
           tag: "a",
           title: "重要且紧急",
-          todoList: [],
+          todoList: [
+            { id: 1, name: "test1" },
+            { id: 11, name: "test1-1" },
+            { id: 12, name: "test1-2" },
+          ],
         },
         {
           tag: "b",
           title: "重要不紧急",
-          todoList: [],
+          todoList: [{ id: 2, name: "test2" }],
         },
         {
           tag: "c",
           title: "紧急不重要",
-          todoList: [],
+          todoList: [
+            { id: 3, name: "test3" },
+            { id: 31, name: "test3-1" },
+            { id: 32, name: "test3-2" },
+          ],
         },
         {
           tag: "d",
           title: "不重要不紧急",
-          todoList: [],
+          todoList: [{ id: 4, name: "test4" }],
         },
       ],
     };
+  },
+
+  methods: {
+    moveData(tag, index, item) {
+      let idx = 0;
+      switch (tag) {
+        case "a":
+          idx = 0;
+          break;
+        case "b":
+          idx = 1;
+          break;
+        case "c":
+          idx = 2;
+          break;
+        case "d":
+          idx = 3;
+          break;
+        default:
+          idx = 4;
+          break;
+      }
+      console.log("-------- move Data -----------");
+      console.log(tag);
+      console.log(idx);
+      console.log(index);
+      console.log(item);
+      console.log("-------- move Data end -----------");
+      this.quadrants[idx].todoList.push(item);
+      console.log(this.quadrants[idx].todoList);
+    },
   },
 };
 </script>
