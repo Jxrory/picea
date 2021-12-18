@@ -4,7 +4,7 @@
       >&#xe601;</span
     >
     <span class="iconfont iconfont-color" v-else @click="reopen">&#xe669;</span>
-    <span :class="isDone ? 'title-done' : 'title-undo'">{{
+    <span :class="isDone ? 'title-done' : 'title-undo'" @click="showDetail">{{
       todoItem.title
     }}</span>
   </div>
@@ -23,15 +23,23 @@ export default {
   },
 
   methods: {
+    // 完成 todoItem
     done() {
       this.isDone = true;
 
       // 请求 done todoItem
     },
+
+    // 重新开启 todoItem
     reopen() {
       this.isDone = false;
 
       // 请求 reopen todoItem
+    },
+
+    // 点击 todoItem Title 后, 展示详细信息
+    showDetail(todoItem) {
+      console.log(todoItem);
     },
   },
 };

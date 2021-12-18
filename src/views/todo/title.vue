@@ -75,7 +75,6 @@ export default {
 
 <style lang="scss" scope>
 @import "~@/styles/mixin.scss";
-@import "~@/styles/iconfont.css";
 
 .quadrant-title-common {
   @include full-all;

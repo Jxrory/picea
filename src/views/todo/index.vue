@@ -110,6 +110,8 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
+// 引入 iconfont 字体
+@import "~@/styles/iconfont.css";
 
 .todo-main-box {
   @include full-all;
