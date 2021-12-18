@@ -4,7 +4,9 @@
       >&#xe601;</span
     >
     <span class="iconfont iconfont-color" v-else @click="reopen">&#xe669;</span>
-    <span class="title">{{ todoItem.title }}</span>
+    <span :class="isDone ? 'title-done' : 'title-undo'">{{
+      todoItem.title
+    }}</span>
   </div>
 </template>
 
@@ -57,10 +59,17 @@ export default {
     color: #666;
   }
 
-  .title {
+  .title-undo {
     justify-self: start;
 
     font-size: 0.8rem;
+  }
+
+  .title-done {
+    @extend .title-undo;
+
+    color: #999;
+    text-decoration: line-through;
   }
 
   &:hover {
