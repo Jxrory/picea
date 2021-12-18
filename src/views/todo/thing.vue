@@ -1,8 +1,9 @@
 <template>
   <div class="thing" :key="todoItem.no">
-    <div>
-      <span class="iconfont iconfont-color">&#xe7d1;</span>
-    </div>
+    <span class="iconfont iconfont-color" v-if="!isDone" @click="done"
+      >&#xe601;</span
+    >
+    <span class="iconfont iconfont-color" v-else @click="reopen">&#xe669;</span>
     <span class="title">{{ todoItem.title }}</span>
   </div>
 </template>
@@ -14,7 +15,22 @@ export default {
   props: ["todoItem"],
 
   data() {
-    return {};
+    return {
+      isDone: false,
+    };
+  },
+
+  methods: {
+    done() {
+      this.isDone = true;
+
+      // 请求 done todoItem
+    },
+    reopen() {
+      this.isDone = false;
+
+      // 请求 reopen todoItem
+    },
   },
 };
 </script>
@@ -26,8 +42,8 @@ export default {
 .thing {
   width: 100%;
   height: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
   box-sizing: border-box;
 
   display: grid;
