@@ -127,7 +127,7 @@ export default {
     justify-self: start;
     margin-left: 5px;
 
-    font-size: 0.9em;
+    font-size: 0.9rem;
     color: #fff;
   }
 

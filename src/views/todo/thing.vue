@@ -44,7 +44,7 @@ export default {
   .title {
     justify-self: start;
 
-    font-size: 0.8em;
+    font-size: 0.8rem;
   }
 
   &:hover {

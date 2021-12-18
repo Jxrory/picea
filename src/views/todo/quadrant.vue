@@ -95,6 +95,11 @@ export default {
     border-radius: 0 0 4px 4px; // 设置下边两个角4px的圆弧
 
     background-color: #f2f4f5;
+
+    .empty {
+      margin-top: 30px;
+      font-size: 0.8rem;
+    }
   }
 }
 </style>
