@@ -1,6 +1,6 @@
 <template>
   <div :class="tag">
-    <el-icon color="#fff"><list /></el-icon>
+    <span class="iconfont iconfont-color">&#xe726;</span>
     <span class="title-name">{{ title }}</span>
     <div>
       <el-input
@@ -14,31 +14,22 @@
         @keyup.enter="saveHandler"
       />
     </div>
-    <el-icon
+    <div
       class="edit-btn"
-      color="#fff"
       @click="
         isEditStatus = !isEditStatus;
         input = ''; // 清除数据
       "
     >
-      <edit v-if="!isEditStatus" />
-      <close v-else />
-    </el-icon>
+      <span v-if="!isEditStatus" class="iconfont iconfont-color">&#xe6f6;</span>
+      <span class="iconfont iconfont-color" v-else>&#xe747;</span>
+    </div>
   </div>
 </template>
 
 <script>
-import { Edit, List, Close } from "@element-plus/icons-vue";
-
 export default {
   name: "Title",
-
-  components: {
-    Edit,
-    List,
-    Close,
-  },
 
   props: ["title", "tag"],
   data() {
@@ -72,6 +63,7 @@ export default {
 
 <style lang="scss" scope>
 @import "~@/styles/mixin.scss";
+@import "~@/styles/iconfont.css";
 
 .quadrant-title-common {
   @include full-all;
@@ -87,6 +79,11 @@ export default {
   display: grid;
   grid-template-columns: 16px 1fr 5fr 25px;
   align-items: center;
+
+  // 限定 iconfont color 范围
+  .iconfont-color {
+    color: #fff;
+  }
 }
 
 .quadrant {

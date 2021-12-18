@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "iconfont";
+  src: url("iconfont.woff2") format("woff2"),
+    url("iconfont.woff") format("woff"), url("iconfont.ttf") format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 18px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-complete:before {
+  content: "\e669";
+}
+
+.icon-editor:before {
+  content: "\e6f6";
+}
+
+.icon-integral-fill:before {
+  content: "\e726";
+}
+
+.icon-close:before {
+  content: "\e747";
+}
+
+.icon-square:before {
+  content: "\e7d1";
+}
