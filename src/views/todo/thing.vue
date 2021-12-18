@@ -1,9 +1,9 @@
 <template>
-  <div class="thing" :key="content.id">
+  <div class="thing" :key="todoItem.no">
     <div>
       <span class="iconfont iconfont-color">&#xe7d1;</span>
     </div>
-    <span>{{ content }}</span>
+    <span class="title">{{ todoItem.title }}</span>
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 export default {
   name: "Thing",
 
-  props: ["content"],
+  props: ["todoItem"],
 
   data() {
     return {};
@@ -39,6 +39,12 @@ export default {
 
   .iconfont-color {
     color: #666;
+  }
+
+  .title {
+    justify-self: start;
+
+    font-size: 0.8em;
   }
 
   &:hover {

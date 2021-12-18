@@ -1,11 +1,15 @@
 <template>
   <div class="quadrant">
-    <Title :tag="quadrantData.tag" :title="quadrantData.title"></Title>
+    <Title
+      :label="qTodosItem.label"
+      :labelDetail="qTodosItem.labelDetail"
+    ></Title>
     <div class="body">
       <!-- 不要添加 [tag="transition-group"], 存在 bug 卡了半天... -->
-      <draggable v-model="todoList" group="todoList" item-key="id">
+      <draggable v-model="todoList" group="todoList" item-key="no">
+        <!-- [keng] 只能用 element ... -->
         <template #item="{ element }">
-          <Thing :content="element"></Thing>
+          <Thing :todoItem="element"></Thing>
         </template>
       </draggable>
       <div v-if="!todoList || todoList.length === 0" class="empty">
@@ -32,23 +36,19 @@ export default {
     Thing,
   },
 
-  emits: ["moveData"],
-  props: ["quadrantData"],
+  emits: ["moveTodoItem"],
+  props: ["qTodosItem"],
   data() {
     return {};
   },
   computed: {
     todoList: {
       get() {
-        return this.quadrantData.todoList;
-        // return this.$store.state.todoList[this.quadrantData.tag].todoList;
+        console.log(this.qTodosItem.todoList);
+        return this.qTodosItem.todoList;
       },
-      set(value) {
-        this.$emit("moveData", this.quadrantData.tag, value);
-        // this.$store.commit("todoList/updateTodoList", {
-        //   tag: this.quadrantData.tag,
-        //   list: value,
-        // });
+      set(newTodoList) {
+        this.$emit("moveTodoItem", this.qTodosItem.label, newTodoList);
       },
     },
   },

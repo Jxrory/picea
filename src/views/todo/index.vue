@@ -1,10 +1,10 @@
 <template>
   <div class="todo-main-box">
     <Quadrant
-      v-for="quadrant in quadrants"
-      :key="quadrant.tag"
-      :quadrantData="quadrant"
-      @moveData="moveData"
+      v-for="qTodosItem in qTodos"
+      :key="qTodosItem.label"
+      :qTodosItem="qTodosItem"
+      @moveTodoItem="moveTodoItem"
     ></Quadrant>
   </div>
 </template>
@@ -21,49 +21,92 @@ export default {
 
   data() {
     return {
-      quadrants: [
+      qTodos: [
         {
-          tag: "a",
-          title: "重要且紧急",
+          label: "a",
+          labelDetail: "重要且紧急",
           todoList: [
-            { id: 1, name: "test1" },
-            { id: 11, name: "test1-1" },
-            { id: 12, name: "test1-2" },
+            {
+              id: 1,
+              label: "a",
+              start: 1639567447,
+              end: 0,
+              no: "61b893effda33d1560585a1e",
+              tag: "",
+              title: "梳理还款逻辑",
+              projectId: "",
+              status: 0,
+              order: 100000,
+            },
           ],
         },
         {
-          tag: "b",
-          title: "重要不紧急",
-          todoList: [{ id: 2, name: "test2" }],
-        },
-        {
-          tag: "c",
-          title: "紧急不重要",
+          label: "b",
+          labelDetail: "重要不紧急",
           todoList: [
-            { id: 3, name: "test3" },
-            { id: 31, name: "test3-1" },
-            { id: 32, name: "test3-2" },
+            {
+              id: 2,
+              label: "b",
+              start: 1639789058,
+              end: 0,
+              no: "61bd3202f607a45f386456a8",
+              tag: "",
+              title: "【TODO】Body页面绘制-拖拽功能",
+              projectId: "",
+              status: 0,
+              order: 1639789058,
+            },
+            {
+              id: 3,
+              label: "b",
+              start: 1639789051,
+              end: 0,
+              no: "61bd31fbf607a45f386456a7",
+              tag: "",
+              title: "【TODO】Body页面绘制-item绘制",
+              projectId: "",
+              status: 0,
+              order: 1639789051,
+            },
           ],
         },
         {
-          tag: "d",
-          title: "不重要不紧急",
-          todoList: [{ id: 4, name: "test4" }],
+          label: "c",
+          labelDetail: "紧急不重要",
+          todoList: [],
+        },
+        {
+          label: "d",
+          labelDetail: "不重要不紧急",
+          todoList: [
+            {
+              id: 4,
+              label: "d",
+              start: 1639788896,
+              end: 0,
+              no: "61bd3160f607a45f386456a5",
+              tag: "",
+              title: "【TODO】保存Title输入的数据",
+              projectId: "",
+              status: 0,
+              order: 100000,
+            },
+          ],
         },
       ],
     };
   },
 
   methods: {
-    moveData(tag, items) {
-      const idx = { a: 0, b: 1, c: 2, d: 3 }[tag];
+    moveTodoItem(label, todoList) {
+      const idx = { a: 0, b: 1, c: 2, d: 3 }[label];
       console.log("-------- move Data -----------");
-      console.log(tag);
+      console.log(label);
       console.log(idx);
-      console.log(items);
+      console.log(todoList);
       console.log("-------- move Data end -----------");
-      this.quadrants[idx].todoList = items;
-      console.log(this.quadrants[idx].todoList);
+      this.qTodos[idx].todoList = todoList;
+      console.log(this.qTodos[idx].todoList);
     },
   },
 };

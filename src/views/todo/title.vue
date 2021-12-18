@@ -1,7 +1,7 @@
 <template>
-  <div :class="tag">
+  <div :class="label">
     <span class="iconfont iconfont-color">&#xe726;</span>
-    <span class="title-name">{{ title }}</span>
+    <span class="title-name">{{ labelDetail }}</span>
     <div>
       <el-input
         v-if="isEditStatus"
@@ -31,7 +31,19 @@
 export default {
   name: "Title",
 
-  props: ["title", "tag"],
+  // 象限类别, 类别名称
+  props: {
+    label: {
+      type: String,
+      required: true,
+      detail: "象限类别",
+    },
+    labelDetail: {
+      type: String,
+      required: true,
+      detail: "象限类别名称",
+    },
+  },
   data() {
     return {
       // 状态
