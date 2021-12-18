@@ -55,32 +55,14 @@ export default {
   },
 
   methods: {
-    moveData(tag, index, item) {
-      let idx = 0;
-      switch (tag) {
-        case "a":
-          idx = 0;
-          break;
-        case "b":
-          idx = 1;
-          break;
-        case "c":
-          idx = 2;
-          break;
-        case "d":
-          idx = 3;
-          break;
-        default:
-          idx = 4;
-          break;
-      }
+    moveData(tag, items) {
+      const idx = { a: 0, b: 1, c: 2, d: 3 }[tag];
       console.log("-------- move Data -----------");
       console.log(tag);
       console.log(idx);
-      console.log(index);
-      console.log(item);
+      console.log(items);
       console.log("-------- move Data end -----------");
-      this.quadrants[idx].todoList.push(item);
+      this.quadrants[idx].todoList = items;
       console.log(this.quadrants[idx].todoList);
     },
   },

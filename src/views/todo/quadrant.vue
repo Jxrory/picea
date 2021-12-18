@@ -2,12 +2,8 @@
   <div class="quadrant">
     <Title :tag="quadrantData.tag" :title="quadrantData.title"></Title>
     <div class="body">
-      <draggable
-        v-model="todoList"
-        tag="transition-group"
-        group="todoList"
-        item-key="id"
-      >
+      <!-- 不要添加 [tag="transition-group"], 存在 bug 卡了半天... -->
+      <draggable v-model="todoList" group="todoList" item-key="id">
         <template #item="{ element }">
           <div class="item" :key="element.id">{{ element.name }}</div>
         </template>
@@ -34,25 +30,20 @@ export default {
   emits: ["moveData"],
   props: ["quadrantData"],
   data() {
-    return {
-      // todoList: this.quadrantData.todoList,
-    };
+    return {};
   },
   computed: {
     todoList: {
       get() {
-        // return this.quadrantData.todoList;
-        return this.$store.state.todoList[this.quadrantData.tag].todoList;
+        return this.quadrantData.todoList;
+        // return this.$store.state.todoList[this.quadrantData.tag].todoList;
       },
       set(value) {
-        console.log("---- set ----");
-        console.log(this.quadrantData.tag);
-        console.log(value);
-        // this.$emit(this.quadrantData.tag, value);
-        this.$store.commit("todoList/updateTodoList", {
-          tag: this.quadrantData.tag,
-          list: value,
-        });
+        this.$emit("moveData", this.quadrantData.tag, value);
+        // this.$store.commit("todoList/updateTodoList", {
+        //   tag: this.quadrantData.tag,
+        //   list: value,
+        // });
       },
     },
   },
@@ -72,17 +63,10 @@ export default {
       console.log("------ end start ------");
       console.log(evt);
       console.log("------ end end ------");
-      // evt.item //可以知道拖动的本身
-      // evt.to    // 可以知道拖动的目标列表
-      // evt.from  // 可以知道之前的列表
-      // evt.oldIndex  // 可以知道拖动前的位置
-      // evt.newIndex  // 可以知道拖动后的位置
     },
     add(evt) {
       console.log("------ add start ------");
-      console.log(this.quadrantData.tag);
       console.log(evt);
-      console.log(this.quadrantData.todoList);
       console.log("------ add end ------");
     },
   },
