@@ -1,0 +1,30 @@
+/* todo detail 页面功能页面 */
+
+$detail-button-div-height: 22px;
+
+.detail-button {
+  cursor: pointer;
+  height: $detail-button-div-height;
+
+  margin-top: 8px;
+  padding: 4px 8px;
+  color: #172b4d;
+  border-radius: 4px;
+  border: 1px solid #e8eaee;
+  background-color: rgba(9, 30, 66, 0.04);
+
+  text-align: start;
+
+  // 内容垂直居中
+  line-height: $detail-button-div-height;
+
+  &:hover {
+    background: #409eff;
+    color: #fff;
+  }
+
+  // 设置 icon 右边间距
+  .iconfont {
+    margin-right: 5px;
+  }
+}
