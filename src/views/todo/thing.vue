@@ -7,18 +7,32 @@
     <span :class="isDone ? 'title-done' : 'title-undo'" @click="showDetail">{{
       todoItem.title
     }}</span>
+
+    <el-dialog v-model="isShowDetail" title="" width="55%">
+      <Detail :todoItem="todoItem"></Detail>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import Detail from "./detail.vue";
+
 export default {
   name: "Thing",
+
+  components: {
+    Detail,
+  },
 
   props: ["todoItem"],
 
   data() {
     return {
+      // 标识 todo item 是否完成
       isDone: false,
+
+      // 显示详细信息
+      isShowDetail: false,
     };
   },
 
@@ -40,6 +54,7 @@ export default {
     // 点击 todoItem Title 后, 展示详细信息
     showDetail(todoItem) {
       console.log(todoItem);
+      this.isShowDetail = true;
     },
   },
 };
@@ -68,6 +83,9 @@ export default {
   }
 
   .title-undo {
+    width: 100%;
+    text-align: start;
+
     justify-self: start;
 
     font-size: 0.8rem;
