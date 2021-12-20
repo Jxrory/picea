@@ -11,7 +11,7 @@
         >&#xe7fc;</span
       >
       <span class="iconfont" v-else>&#xe780;</span>
-      {{ item.title }}
+      {{ item.labelDetail }}
     </div>
     <template #reference>
       <div class="detail-button" @click="visible = true">
@@ -30,37 +30,20 @@ export default {
   data() {
     return {
       visible: false,
-      priority: [
-        {
-          title: "重要且紧急",
-          label: "a",
-          color: "#f80e15",
-        },
-        {
-          title: "重要不紧急",
-          label: "b",
-          color: "#BF9F03",
-        },
-        {
-          title: "紧急不重要",
-          label: "c",
-          color: "#009fe3",
-        },
-        {
-          title: "不紧急不重要",
-          label: "d",
-          color: "#79aa1c",
-        },
-      ],
+      priority: [],
     };
   },
 
+  created() {
+    this.priority = this.$store.getters["todos/getQuadrantsConfig"];
+  },
   methods: {
     // 改变 todo item 的优先级
     changePriority(label) {
-      console.log(label);
-
-      // 业务逻辑 TODO(jx)
+      this.$store.dispatch("todos/updateLabel", {
+        __idx: this.todoItem.__idx,
+        label: label,
+      });
 
       this.visible = false;
     },

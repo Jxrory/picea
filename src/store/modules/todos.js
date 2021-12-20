@@ -74,18 +74,22 @@ const state = () => ({
     {
       label: TODO_ITEM_LABEL.A,
       labelDetail: "重要且紧急",
+      color: "#f80e15",
     },
     {
       label: TODO_ITEM_LABEL.B,
       labelDetail: "重要不紧急",
+      color: "#BF9F03",
     },
     {
       label: TODO_ITEM_LABEL.C,
       labelDetail: "紧急不重要",
+      color: "#009fe3",
     },
     {
       label: TODO_ITEM_LABEL.D,
       labelDetail: "不重要不紧急",
+      color: "#79aa1c",
     },
   ],
 });
