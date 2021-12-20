@@ -1,10 +1,9 @@
 <template>
   <div class="todo-main-box">
     <Quadrant
-      v-for="qTodosItem in qTodos"
-      :key="qTodosItem.label"
-      :qTodosItem="qTodosItem"
-      @moveTodoItem="moveTodoItem"
+      v-for="quadrandConfig in quadrandsConfig"
+      :key="quadrandConfig.label"
+      :quadrandConfig="quadrandConfig"
     ></Quadrant>
   </div>
 </template>
@@ -21,90 +20,14 @@ export default {
 
   data() {
     return {
-      qTodos: [
-        {
-          label: "a",
-          labelDetail: "重要且紧急",
-          todoList: [
-            {
-              label: "a",
-              start: 1639567447,
-              end: 0,
-              no: "61b893effda33d1560585a1e",
-              tag: "",
-              title: "梳理还款逻辑",
-              projectId: "",
-              status: 0,
-              order: 100000,
-            },
-          ],
-        },
-        {
-          label: "b",
-          labelDetail: "重要不紧急",
-          todoList: [
-            {
-              label: "b",
-              start: 1639789058,
-              end: 0,
-              no: "61bd3202f607a45f386456a8",
-              tag: "",
-              title: "【TODO】Body页面绘制-拖拽功能",
-              projectId: "",
-              status: 0,
-              order: 1639789058,
-            },
-            {
-              label: "b",
-              start: 1639789051,
-              end: 0,
-              no: "61bd31fbf607a45f386456a7",
-              tag: "",
-              title: "【TODO】Body页面绘制-item绘制",
-              projectId: "",
-              status: 0,
-              order: 1639789051,
-            },
-          ],
-        },
-        {
-          label: "c",
-          labelDetail: "紧急不重要",
-          todoList: [],
-        },
-        {
-          label: "d",
-          labelDetail: "不重要不紧急",
-          todoList: [
-            {
-              label: "d",
-              start: 1639788896,
-              end: 0,
-              no: "61bd3160f607a45f386456a5",
-              tag: "",
-              title: "【TODO】保存Title输入的数据",
-              projectId: "",
-              status: 0,
-              order: 100000,
-            },
-          ],
-        },
-      ],
+      quadrandsConfig: [],
     };
   },
 
-  methods: {
-    moveTodoItem(label, todoList) {
-      const idx = { a: 0, b: 1, c: 2, d: 3 }[label];
-      console.log("-------- move Data -----------");
-      console.log(label);
-      console.log(idx);
-      console.log(todoList);
-      console.log("-------- move Data end -----------");
-      this.qTodos[idx].todoList = todoList;
-      console.log(this.qTodos[idx].todoList);
-    },
+  created() {
+    this.quadrandsConfig = this.$store.getters["todos/getQuadrantsConfig"];
   },
+  methods: {},
 };
 </script>
 

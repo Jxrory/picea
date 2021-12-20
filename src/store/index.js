@@ -1,6 +1,6 @@
 import { createStore, createLogger } from "vuex";
 
-import todoList from "./modules/todoList";
+import todos from "./modules/todos";
 
 // // https://webpack.js.org/guides/dependency-management/#requirecontext
 // const modulesFiles = require.context("./modules", true, /\.js$/);
@@ -19,7 +19,7 @@ const debug = process.env.NODE_ENV !== "production";
 
 export default createStore({
   modules: {
-    todoList,
+    todos,
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],

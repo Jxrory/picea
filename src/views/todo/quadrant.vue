@@ -1,8 +1,8 @@
 <template>
   <div class="quadrant">
     <Title
-      :label="qTodosItem.label"
-      :labelDetail="qTodosItem.labelDetail"
+      :label="quadrandConfig.label"
+      :labelDetail="quadrandConfig.labelDetail"
     ></Title>
     <div class="body">
       <!-- 不要添加 [tag="transition-group"], 存在 bug 卡了半天... -->
@@ -36,19 +36,28 @@ export default {
     Thing,
   },
 
-  emits: ["moveTodoItem"],
-  props: ["qTodosItem"],
+  props: ["quadrandConfig"],
   data() {
     return {};
   },
   computed: {
     todoList: {
       get() {
-        console.log(this.qTodosItem.todoList);
-        return this.qTodosItem.todoList;
+        return this.$store.getters["todos/getListByLabel"](
+          this.quadrandConfig.label
+        );
       },
       set(newTodoList) {
-        this.$emit("moveTodoItem", this.qTodosItem.label, newTodoList);
+        for (let i = 0; i < newTodoList.length; i++) {
+          // 换象限: 修改 todo item label
+          if (newTodoList[i].label !== this.quadrandConfig.label) {
+            this.$store.dispatch("todos/updateLabel", {
+              __idx: newTodoList[i].__idx,
+              label: this.quadrandConfig.label,
+            });
+          }
+          // 组内换顺序: 修改 order TODO(jx)
+        }
       },
     },
   },

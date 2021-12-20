@@ -63,11 +63,12 @@ export default {
     saveHandler() {
       console.log("保存内容: " + this.input);
 
-      // 保存数据到后端 TODO(jx)
+      this.$store.dispatch("todos/createSimple", {
+        label: this.label,
+        title: this.input,
+      });
 
       this.dataInit();
-
-      // 刷新 TODO 页面数据 TODO(jx)
     },
   },
 };

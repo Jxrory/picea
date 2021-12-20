@@ -1,12 +1,14 @@
 <template>
   <div class="thing" :key="todoItem.no">
-    <span class="iconfont iconfont-color" v-if="!isDone" @click="done"
+    <span class="iconfont iconfont-color" v-if="!todoItem.status" @click="done"
       >&#xe601;</span
     >
     <span class="iconfont iconfont-color" v-else @click="reopen">&#xe669;</span>
-    <span :class="isDone ? 'title-done' : 'title-undo'" @click="showDetail">{{
-      todoItem.title
-    }}</span>
+    <span
+      :class="todoItem.status ? 'title-done' : 'title-undo'"
+      @click="showDetail"
+      >{{ todoItem.title }}</span
+    >
 
     <el-dialog v-model="isShowDetail" title="" width="55%">
       <Detail :todoItem="todoItem"></Detail>
@@ -28,9 +30,6 @@ export default {
 
   data() {
     return {
-      // 标识 todo item 是否完成
-      isDone: false,
-
       // 显示详细信息
       isShowDetail: false,
     };
@@ -39,16 +38,12 @@ export default {
   methods: {
     // 完成 todoItem
     done() {
-      this.isDone = true;
-
-      // 请求 done todoItem
+      this.$store.dispatch("todos/done", this.todoItem.__idx);
     },
 
     // 重新开启 todoItem
     reopen() {
-      this.isDone = false;
-
-      // 请求 reopen todoItem
+      this.$store.dispatch("todos/reopen", this.todoItem.__idx);
     },
 
     // 点击 todoItem Title 后, 展示详细信息
