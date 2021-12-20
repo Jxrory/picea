@@ -19,12 +19,13 @@ export default {
   },
 
   methods: {
-    // 完成 todoItem TODO(jx)
     done() {
       console.log(this.todoItem);
+      this.$store.dispatch("todos/done", this.todoItem.__idx);
     },
-    // 重开 todoItem TODO(jx)
-    reopen() {},
+    reopen() {
+      this.$store.dispatch("todos/reopen", this.todoItem.__idx);
+    },
   },
 };
 </script>
