@@ -1,9 +1,17 @@
 // imports
 
-//////// todo item status ////////
+//////// todo item 状态 ////////
 const TODO_ITEM_STATUS = {
-  UNDO: 0,
-  DONE: 1,
+  UNDO: 0, // 未完成
+  DONE: 1, // 完成
+};
+
+//////// todo item label ////////
+const TODO_ITEM_LABEL = {
+  A: "a",
+  B: "b",
+  C: "c",
+  D: "d",
 };
 
 // initial state
@@ -64,19 +72,19 @@ const state = () => ({
   // 四个象限配置数据
   quadrantsConfig: [
     {
-      label: "a",
+      label: TODO_ITEM_LABEL.A,
       labelDetail: "重要且紧急",
     },
     {
-      label: "b",
+      label: TODO_ITEM_LABEL.B,
       labelDetail: "重要不紧急",
     },
     {
-      label: "c",
+      label: TODO_ITEM_LABEL.C,
       labelDetail: "紧急不重要",
     },
     {
-      label: "d",
+      label: TODO_ITEM_LABEL.D,
       labelDetail: "不重要不紧急",
     },
   ],
