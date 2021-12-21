@@ -1,11 +1,20 @@
 <template>
   <div class="todo-detail">
-    <div class="body"></div>
+    <div class="detail-body">
+      <Header
+        :__idx="todoItem.__idx"
+        :title="todoItem.title"
+        :start="todoItem.start"
+      />
+      <Describe :todoItem="todoItem" />
+    </div>
     <Actions :todoItem="todoItem" />
   </div>
 </template>
 
 <script>
+import Header from "./detail/header";
+import Describe from "./detail/describe";
 import Actions from "./detail/actinons";
 
 export default {
@@ -13,6 +22,8 @@ export default {
   name: "Detail",
 
   components: {
+    Header,
+    Describe,
     Actions,
   },
 

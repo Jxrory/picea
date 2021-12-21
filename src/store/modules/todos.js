@@ -148,6 +148,10 @@ const actions = {
     });
   },
 
+  // 更新提醒时间
+  update: ({ commit }, { __idx, key, value }) => {
+    commit("UPDATE_VALUE_BY__IDX", { __idx, key, value });
+  },
   // 更新 label
   updateLabel: ({ commit }, { __idx, label }) => {
     commit("UPDATE_VALUE_BY__IDX", { __idx, key: "label", value: label });

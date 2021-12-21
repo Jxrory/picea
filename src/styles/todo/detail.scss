@@ -28,3 +28,14 @@ $detail-button-div-height: 22px;
     margin-right: 5px;
   }
 }
+
+// detail body 内容布局
+.detail-body-grid {
+  width: 100%;
+
+  text-align: start;
+
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  place-items: start start;
+}
