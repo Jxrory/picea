@@ -7,6 +7,9 @@
         :start="todoItem.start"
       />
       <Describe :todoItem="todoItem" />
+      <Plan :start="todoItem.start" :end="todoItem.end" />
+      <Priority :label="todoItem.label" />
+      <Remind :remind="todoItem.remind" />
     </div>
     <Actions :todoItem="todoItem" />
   </div>
@@ -15,6 +18,10 @@
 <script>
 import Header from "./detail/header";
 import Describe from "./detail/describe";
+import Plan from "./detail/plan";
+import Priority from "./detail/priority";
+import Remind from "./detail/remind";
+
 import Actions from "./detail/actinons";
 
 export default {
@@ -24,6 +31,10 @@ export default {
   components: {
     Header,
     Describe,
+    Plan,
+    Priority,
+    Remind,
+
     Actions,
   },
 

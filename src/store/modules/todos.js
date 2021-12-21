@@ -105,6 +105,9 @@ const getters = {
   getQuadrantsConfig: (state) => {
     return state.quadrantsConfig;
   },
+  getQuadrantConfigByLable: (state) => (label) => {
+    return state.quadrantsConfig.find((conf) => conf.label === label);
+  },
 };
 
 // mutations
