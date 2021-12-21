@@ -31,6 +31,7 @@ const state = () => ({
       projectId: "",
       status: 1,
       order: 100000,
+      content: "",
     },
     {
       __idx: 1,
@@ -43,6 +44,7 @@ const state = () => ({
       projectId: "",
       status: 0,
       order: 1639789058,
+      content: "",
     },
     {
       __idx: 2,
@@ -55,6 +57,7 @@ const state = () => ({
       projectId: "",
       status: 0,
       order: 1639789051,
+      content: "",
     },
     {
       __idx: 3,
@@ -67,6 +70,7 @@ const state = () => ({
       projectId: "",
       status: 0,
       order: 100000,
+      content: "",
     },
   ],
   // 四个象限配置数据
@@ -123,8 +127,8 @@ const mutations = {
       );
       return;
     }
-    state.list[__idx][key] = value;
     console.log(state.list[__idx]);
+    state.list[__idx][key] = value;
   },
 
   DELETE_BY__IDX: (state, __idx) => {

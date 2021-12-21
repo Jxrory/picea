@@ -6,7 +6,7 @@
       <textarea
         placeholder="添加详细描述..."
         @change="change"
-        v-model="content"
+        v-model="input"
       ></textarea>
     </div>
   </div>
@@ -14,22 +14,22 @@
 
 <script>
 import store from "@/store";
+
 export default {
   name: "DetailDescribe",
 
-  props: ["todoItem"],
+  props: ["__idx", "content"],
   data() {
     return {
-      content: "",
+      input: "",
     };
   },
 
   created() {
-    this.content = this.todoItem.content || "";
+    this.input = this.content || "";
   },
   methods: {
     change() {
-      console.log(this.input);
       store.dispatch("todos/update", {
         __idx: this.__idx,
         key: "content",

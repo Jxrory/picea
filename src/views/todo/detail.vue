@@ -6,7 +6,7 @@
         :title="todoItem.title"
         :start="todoItem.start"
       />
-      <Describe :todoItem="todoItem" />
+      <Describe :__idx="todoItem.__idx" :content="todoItem.content" />
       <Plan :start="todoItem.start" :end="todoItem.end" />
       <Priority :label="todoItem.label" />
       <Remind :remind="todoItem.remind" />
