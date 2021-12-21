@@ -5,6 +5,7 @@
     <FinishButton :todoItem="todoItem" />
     <PriorityButton :todoItem="todoItem" />
     <!-- <OwnerButton :todoItem="todoItem" /> -->
+    <!-- 继续修改 TODO(jx) -->
     <PlanButton :todoItem="todoItem" />
     <RemindButton :todoItem="todoItem" />
     <!-- <AttachButton :todoItem="todoItem" /> -->

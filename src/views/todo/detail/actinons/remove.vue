@@ -1,11 +1,21 @@
 <template>
-  <div class="detail-button" @click="remove">
-    <span class="iconfont">&#xe718;</span>
-    <span>删除</span>
-  </div>
+  <el-popconfirm
+    title="确定要删除该任务吗?"
+    confirmButtonText="确定"
+    cancelButtonText="取消"
+    @confirm="remove"
+  >
+    <template #reference>
+      <div class="detail-button">
+        <span class="iconfont">&#xe718;</span>
+        <span>删除</span>
+      </div>
+    </template>
+  </el-popconfirm>
 </template>
 
 <script>
+import store from "@/store";
 export default {
   name: "Remove",
 
@@ -18,6 +28,7 @@ export default {
     // 删除 todo item
     remove() {
       console.log(this.todoItem);
+      store.dispatch("todos/delete", this.todoItem.__idx);
     },
   },
 };

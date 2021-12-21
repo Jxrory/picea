@@ -123,6 +123,10 @@ const mutations = {
     state.list[__idx][key] = value;
     console.log(state.list[__idx]);
   },
+
+  DELETE_BY__IDX: (state, __idx) => {
+    state.list.splice(__idx, 1);
+  },
 };
 
 // actions
@@ -162,6 +166,23 @@ const actions = {
       key: "status",
       value: TODO_ITEM_STATUS.UNDO,
     });
+  },
+  // 更新开始时间和结束时间
+  updateStartEnd: ({ commit }, { __idx, start, end }) => {
+    if (start > 0) {
+      commit("UPDATE_VALUE_BY__IDX", { __idx, key: "start", value: start });
+    }
+    if (end > 0) {
+      commit("UPDATE_VALUE_BY__IDX", { __idx, key: "end", value: end });
+    }
+  },
+  // 更新提醒时间
+  updateRemind: ({ commit }, { __idx, remind }) => {
+    commit("UPDATE_VALUE_BY__IDX", { __idx, key: "remind", value: remind });
+  },
+
+  delete: ({ commit }, __idx) => {
+    commit("DELETE_BY__IDX", __idx);
   },
 };
 

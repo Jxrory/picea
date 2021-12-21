@@ -7,6 +7,7 @@
       range-separator="到"
       start-placeholder="开始时间"
       end-placeholder="结束时间"
+      @change="change"
     >
     </el-date-picker>
     <template #reference>
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import store from "@/store";
 export default {
   name: "Plan",
 
@@ -67,6 +69,14 @@ export default {
         },
       ],
     };
+  },
+
+  methods: {
+    change: (dateList) => {
+      const start = Math.round(dateList[0].getTime() / 1000);
+      const end = Math.round(dateList[1].getTime() / 1000);
+      store.dispatch("todos/updateStartEnd", { start, end });
+    },
   },
 };
 </script>

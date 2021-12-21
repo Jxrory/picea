@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import store from "@/store";
 export default {
   name: "Remind",
 
@@ -34,19 +35,19 @@ export default {
       remind: [
         {
           title: "开始时5分钟",
-          value: 0,
+          value: 5,
         },
         {
           title: "开始时前15分钟",
-          value: 1,
+          value: 15,
         },
         {
           title: "开始时前30分钟",
-          value: 2,
+          value: 30,
         },
         {
           title: "开始时前1天",
-          value: 3,
+          value: 24 * 60,
         },
       ],
     };
@@ -55,6 +56,10 @@ export default {
   methods: {
     changeRemind(value) {
       console.log(value);
+      store.dispatch("todos/updateRemind", {
+        __idx: this.todoItem.__idx,
+        remind: value,
+      });
     },
   },
 };
