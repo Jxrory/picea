@@ -38,4 +38,9 @@ $detail-button-div-height: 22px;
   display: grid;
   grid-template-columns: 30px 1fr;
   place-items: start start;
+
+  .iconfont {
+    font-size: 18px;
+    font-weight: 570;
+  }
 }
