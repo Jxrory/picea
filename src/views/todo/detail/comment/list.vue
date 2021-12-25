@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import store from "@/store";
 import CommentItem from "./item";
 
 export default {
@@ -43,15 +44,7 @@ export default {
   computed: {
     comments: {
       get() {
-        return [
-          {
-            id: 1,
-            created: Date.now(),
-            nick: "Rory",
-            content: "comment content",
-            status: 0,
-          },
-        ];
+        return store.getters["todos/getCommentsByIdx"](this.__idx);
       },
     },
   },
@@ -62,6 +55,16 @@ export default {
   methods: {
     submit() {
       console.log("comments input: ", this.input);
+      store.dispatch("todos/addComment", {
+        __idx: this.__idx,
+        comment: {
+          id: Date.now(),
+          created: Date.now(),
+          nick: "jxrory", // 获取用户名 TODO(jx)
+          content: this.input,
+          status: 0,
+        },
+      });
 
       this.input = "";
     },

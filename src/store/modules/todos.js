@@ -13,6 +13,12 @@ const SUB_TODO_ITEM_STATUS = {
   DELETED: 9, // 删除
 };
 
+const COMMENT_STATUS = {
+  UNDO: 0, // 未完成
+  DONE: 1, // 完成
+  DELETED: 9, // 删除
+};
+
 //////// todo item label ////////
 const TODO_ITEM_LABEL = {
   A: "a",
@@ -75,6 +81,16 @@ const getters = {
       (item) => item.status !== SUB_TODO_ITEM_STATUS.DELETED
     );
   },
+
+  // 获取 comments
+  getCommentsByIdx: (state) => (__idx) => {
+    if (!state.list[__idx].comments) {
+      return [];
+    }
+    return state.list[__idx].comments.filter(
+      (item) => item.status !== COMMENT_STATUS.DELETED
+    );
+  },
 };
 
 // mutations
@@ -126,6 +142,15 @@ const mutations = {
         state.list[__idx].subTodos[subTodoIdx] = subTodoItem;
       }
     }
+  },
+
+  ///////////// Comment /////////////
+  ADD_COMMENT_ITEM: (state, { __idx, comment }) => {
+    if (!state.list[__idx].comments) {
+      state.list[__idx].comments = [];
+    }
+    console.log("__idx: ", __idx, "\tcomments:", state.list[__idx].comments);
+    state.list[__idx].comments.push(comment);
   },
 };
 
@@ -278,6 +303,12 @@ const actions = {
     const tmpSubTodoItem = JSON.parse(JSON.stringify(subTodoItem));
     tmpSubTodoItem.status = SUB_TODO_ITEM_STATUS.DELETED;
     commit("UPDATE_SUB_TODO_ITEM", { __idx, subTodoItem: tmpSubTodoItem });
+  },
+
+  //////////////// comments ////////////////
+  addComment: ({ commit }, { __idx, comment }) => {
+    console.log("addComment: ", comment);
+    commit("ADD_COMMENT_ITEM", { __idx: __idx, comment: comment });
   },
 };
 
