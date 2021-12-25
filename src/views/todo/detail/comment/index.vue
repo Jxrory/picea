@@ -4,8 +4,8 @@
     <div style="width: 100%">
       <div class="title">
         <span class="hover" @click="isShowLog = false">评论</span>
-        <span style="margin: 0 20px">|</span>
-        <span class="hover" @click="isShowLog = true">操作记录</span>
+        <!-- <span style="margin: 0 20px">|</span>
+        <span class="hover" @click="isShowLog = true">操作记录</span> -->
       </div>
       <Comments :__idx="__idx" v-if="!isShowLog" />
       <Logs :__idx="__idx" v-if="isShowLog" />
