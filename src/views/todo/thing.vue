@@ -10,7 +10,7 @@
       >{{ todoItem.title }}</span
     >
 
-    <el-dialog v-model="isShowDetail" title="" width="55%">
+    <el-dialog v-model="isShowDetail" title="" width="55%" top="5vh">
       <Detail :todoItem="todoItem"></Detail>
     </el-dialog>
   </div>

@@ -11,7 +11,7 @@
       <Priority :label="todoItem.label" />
       <Remind :remind="todoItem.remind" />
       <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem.subTodos" />
-      <Comment :__idx="todoItem.__idx" :comments="todoItem" />
+      <Comment :__idx="todoItem.__idx" :comments="todoItem.comments" />
     </div>
     <Actions :todoItem="todoItem" />
   </div>
