@@ -31,15 +31,6 @@ export default {
       isShowLog: false,
     };
   },
-  computed: {
-    comments: {
-      get() {
-        return [];
-      },
-    },
-  },
-
-  methods: {},
 };
 </script>
 
