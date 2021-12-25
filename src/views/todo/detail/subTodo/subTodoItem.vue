@@ -4,7 +4,7 @@
     :class="{ finished: !!(subTodoItem.status === 1) }"
   >
     <span class="iconfont status" @click="changeStatus"></span>
-    <span class="content">{{ subTodoItem.title }}</span>
+    <span class="content" @click="visible = true">{{ subTodoItem.title }}</span>
     <el-popconfirm
       title="确认删除吗?"
       confirmButtonText="确定"
@@ -15,7 +15,14 @@
         <span class="iconfont close">&#xe747;</span>
       </template>
     </el-popconfirm>
-    <Editor v-if="visible" />
+
+    <!-- 修改子任务的内容 -->
+    <Editor
+      v-if="visible"
+      :__idx="__idx"
+      :subTodoItem="subTodoItem"
+      @cancel="cancelEdit"
+    />
   </div>
 </template>
 
@@ -63,6 +70,11 @@ export default {
         subTodoItem: this.subTodoItem,
       });
     },
+
+    // 取消编辑
+    cancelEdit() {
+      this.visible = false;
+    },
   },
 };
 </script>
@@ -71,10 +83,13 @@ export default {
 @import "~@/styles/_var.scss";
 
 .detail-subtodo-item {
+  cursor: pointer;
   position: relative;
   padding-left: 5px;
   padding-right: 5px;
+  height: 32px;
   background-color: #fafafa;
+  // box-sizing: border-box;
 
   &.finished {
     .content {
@@ -89,9 +104,9 @@ export default {
   }
 
   .status {
-    height: 32px;
-    font-size: 16px;
-    line-height: 32px;
+    position: absolute;
+    left: 5px;
+    top: 8px;
 
     &:hover {
       color: $primary;
@@ -99,7 +114,9 @@ export default {
   }
 
   .content {
-    margin: 0 10px;
+    display: block;
+    min-width: 100%;
+    margin: 0 28px;
     height: 32px;
     font-size: 16px;
     line-height: 32px;
@@ -114,18 +131,22 @@ export default {
     background-color: #f4f4f4;
 
     .close {
-      display: inline;
+      display: inline-block;
     }
   }
 
   .close {
-    float: right;
     display: none;
     color: #666;
 
-    height: 32px;
-    font-size: 16px;
-    line-height: 32px;
+    position: absolute;
+    top: 8px;
+    right: 5px;
+  }
+
+  .subtodo-editor {
+    position: absolute;
+    z-index: 9999;
   }
 }
 </style>

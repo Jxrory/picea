@@ -27,6 +27,7 @@ export default {
   },
 
   created() {
+    console.log("__idx: ", this.__idx, "\tsubTodoItem: ", this.subTodoItem);
     this.input = this.subTodoItem.title || "";
   },
   methods: {
@@ -44,16 +45,23 @@ export default {
 
       const subTodoItem = JSON.parse(JSON.stringify(this.subTodoItem));
       subTodoItem.title = this.input;
-      subTodoItem.status = 0; // 0 未完成, 1 完成, 2 删除
-      if (subTodoItem && !subTodoItem.id) {
-        subTodoItem.id = Date.now();
-      }
-      console.log(subTodoItem);
+
       // 保存子任务数据, 存在两种状态: 1. 新增; 2. 保存;
-      store.dispatch("todos/createSubTodos", {
-        __idx: this.__idx,
-        subTodoItem: subTodoItem,
-      });
+      if (subTodoItem && !subTodoItem.id) {
+        subTodoItem.status = 0; // 0 未完成, 1 完成, 2 删除
+        subTodoItem.id = Date.now();
+        console.log(subTodoItem);
+        store.dispatch("todos/createSubTodos", {
+          __idx: this.__idx,
+          subTodoItem: subTodoItem,
+        });
+      } else if (subTodoItem && subTodoItem.id && subTodoItem.id > 0) {
+        store.dispatch("todos/updateSubTodoItem", {
+          __idx: this.__idx,
+          subTodoItem: subTodoItem,
+        });
+        this.cancel();
+      }
 
       // 清除原先的内容
       this.input = "";
