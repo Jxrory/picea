@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import store from "@/store";
 import Quadrant from "./quadrant.vue";
 
 export default {
@@ -25,7 +26,8 @@ export default {
   },
 
   created() {
-    this.quadrandsConfig = this.$store.getters["todos/getQuadrantsConfig"];
+    this.quadrandsConfig = store.getters["todos/getQuadrantsConfig"];
+    store.dispatch("todos/getTodos");
   },
   methods: {},
 };

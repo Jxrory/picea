@@ -10,7 +10,7 @@
       <Plan :start="todoItem.start" :end="todoItem.end" />
       <Priority :label="todoItem.label" />
       <Remind :remind="todoItem.remind" />
-      <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem" />
+      <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem.subTodos" />
       <Comment :__idx="todoItem.__idx" :comments="todoItem" />
     </div>
     <Actions :todoItem="todoItem" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-header">
+  <div class="detail-comment">
     <span class="iconfont">&#xe615;</span>
     <div style="width: 100%">
       <div class="title"><span>评论</span></div>
@@ -20,8 +20,10 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/todo/detail.scss";
 
-.detail-header {
+.detail-comment {
   @extend .detail-body-grid;
+
+  margin-top: 20px;
 
   .title {
     font-size: 16px;

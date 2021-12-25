@@ -4,6 +4,13 @@
 const TODO_ITEM_STATUS = {
   UNDO: 0, // 未完成
   DONE: 1, // 完成
+  DELETED: 9, // 删除
+};
+
+const SUB_TODO_ITEM_STATUS = {
+  UNDO: 0, // 未完成
+  DONE: 1, // 完成
+  DELETED: 9, // 删除
 };
 
 //////// todo item label ////////
@@ -19,60 +26,7 @@ const TODO_ITEM_LABEL = {
 //
 // NOTICE: __idx 是由前端生成的, 指代 list 的索引
 const state = () => ({
-  list: [
-    {
-      __idx: 0,
-      label: "a",
-      start: 1639567447,
-      end: 0,
-      no: "61b893effda33d1560585a1e",
-      tag: "",
-      title: "梳理还款逻辑",
-      projectId: "",
-      status: 1,
-      order: 100000,
-      content: "",
-    },
-    {
-      __idx: 1,
-      label: "b",
-      start: 1639789058,
-      end: 0,
-      no: "61bd3202f607a45f386456a8",
-      tag: "",
-      title: "【TODO】Body页面绘制-拖拽功能",
-      projectId: "",
-      status: 0,
-      order: 1639789058,
-      content: "",
-    },
-    {
-      __idx: 2,
-      label: "b",
-      start: 1639789051,
-      end: 0,
-      no: "61bd31fbf607a45f386456a7",
-      tag: "",
-      title: "【TODO】Body页面绘制-item绘制",
-      projectId: "",
-      status: 0,
-      order: 1639789051,
-      content: "",
-    },
-    {
-      __idx: 3,
-      label: "d",
-      start: 1639788896,
-      end: 0,
-      no: "61bd3160f607a45f386456a5",
-      tag: "",
-      title: "【TODO】保存Title输入的数据",
-      projectId: "",
-      status: 0,
-      order: 100000,
-      content: "",
-    },
-  ],
+  list: [],
   // 四个象限配置数据
   quadrantsConfig: [
     {
@@ -102,7 +56,9 @@ const state = () => ({
 const getters = {
   // 根据象限 label 获取 todoList
   getListByLabel: (state) => (label) => {
-    return state.list.filter((todo) => todo.label === label);
+    return state.list.filter(
+      (todo) => todo.status !== TODO_ITEM_STATUS.DELETED && todo.label === label
+    );
   },
 
   // 获取象限配置数据
@@ -112,12 +68,25 @@ const getters = {
   getQuadrantConfigByLable: (state) => (label) => {
     return state.quadrantsConfig.find((conf) => conf.label === label);
   },
+
+  // 获取 subTodos
+  getSubTodosByIdx: (state) => (__idx) => {
+    return state.list[__idx].subTodos.filter(
+      (item) => item.status !== SUB_TODO_ITEM_STATUS.DELETED
+    );
+  },
 };
 
 // mutations
 const mutations = {
-  CREATE: (state, item) => {
-    state.list.push(item);
+  CREATE: (state, todos) => {
+    // 拦截: 设置 `__idx` 和 `subTodos`
+    const todoList = todos || [];
+    for (let i = 0; i < todoList.length; i++) {
+      todoList[i]["__idx"] = i;
+      todoList[i]["subTodos"] = todoList["subTodos"] || [];
+    }
+    state.list = todoList;
   },
 
   UPDATE_VALUE_BY__IDX: (state, { __idx, key, value }) => {
@@ -132,13 +101,38 @@ const mutations = {
   },
 
   DELETE_BY__IDX: (state, __idx) => {
-    state.list.splice(__idx, 1);
+    // 删除后 `__idx` 会改变, 只改变状态
+    // state.list.splice(__idx, 1);
+    if (state.list.length <= __idx) {
+      console.error("DELETE_BY__IDX index out of range!!! __idx=" + __idx);
+      return;
+    }
+    state.list[__idx]["status"] = TODO_ITEM_STATUS.DELETED;
+  },
+
+  ///////////// Sub Todo List /////////////
+  ADD_SUB_TODO_ITEM: (state, { __idx, subTodoItem }) => {
+    console.log(state.list[__idx]);
+    // subTodoItem.id = Date.now(); // NOTICE: id 都一样???
+    state.list[__idx].subTodos.push(subTodoItem);
+  },
+  UPDATE_SUB_TODO_ITEM: (state, { __idx, subTodoItem }) => {
+    console.log(state.list[__idx]);
+    if (subTodoItem && subTodoItem.id && subTodoItem.id > 0) {
+      const subTodoIdx = state.list[__idx].subTodos.findIndex(
+        (item) => item.id === subTodoItem.id
+      );
+      if (subTodoIdx > -1) {
+        state.list[__idx].subTodos[subTodoIdx] = subTodoItem;
+      }
+    }
   },
 };
 
 // actions
 const actions = {
-  // 在象限头部添加的简单 TODO item
+  ///////////////// todo list /////////////////
+  // 在象限头部添加的简单 TODO item FIXME(jx)
   createSimple({ state, commit }, { label, title }) {
     const time = Math.round(Date.now());
     commit("CREATE", {
@@ -192,8 +186,98 @@ const actions = {
     commit("UPDATE_VALUE_BY__IDX", { __idx, key: "remind", value: remind });
   },
 
+  // 删除一个 todo item
   delete: ({ commit }, __idx) => {
     commit("DELETE_BY__IDX", __idx);
+  },
+
+  // 获取 todos
+  getTodos: ({ commit }) => {
+    // 获取后端数据 TODO(jx)
+    const todos = [
+      {
+        __idx: 0,
+        label: "a",
+        start: 1639567447,
+        end: 0,
+        no: "61b893effda33d1560585a1e",
+        tag: "",
+        title: "梳理还款逻辑",
+        projectId: "",
+        status: 1,
+        order: 100000,
+        content: "",
+      },
+      {
+        __idx: 1,
+        label: "b",
+        start: 1639789058,
+        end: 0,
+        no: "61bd3202f607a45f386456a8",
+        tag: "",
+        title: "【TODO】Body页面绘制-拖拽功能",
+        projectId: "",
+        status: 0,
+        order: 1639789058,
+        content: "",
+      },
+      {
+        __idx: 2,
+        label: "b",
+        start: 1639789051,
+        end: 0,
+        no: "61bd31fbf607a45f386456a7",
+        tag: "",
+        title: "【TODO】Body页面绘制-item绘制",
+        projectId: "",
+        status: 0,
+        order: 1639789051,
+        content: "",
+      },
+      {
+        __idx: 3,
+        label: "d",
+        start: 1639788896,
+        end: 0,
+        no: "61bd3160f607a45f386456a5",
+        tag: "",
+        title: "【TODO】保存Title输入的数据",
+        projectId: "",
+        status: 0,
+        order: 100000,
+        content: "",
+      },
+    ];
+
+    // 更新数据
+    commit("CREATE", todos);
+  },
+
+  //////////////// sub todos ////////////////
+  createSubTodos: ({ commit }, { __idx, subTodoItem }) => {
+    commit("ADD_SUB_TODO_ITEM", { __idx, subTodoItem });
+  },
+  getSubTodos: ({ state, commit }, __idx) => {
+    // const subTodos = [];
+    // commit("UPDATE_VALUE_BY__IDX", { __idx, key: "subTodos", value: subTodos });
+  },
+  updateSubTodoItem: ({ commit }, { __idx, subTodoItem }) => {
+    commit("UPDATE_SUB_TODO_ITEM", { __idx, subTodoItem });
+  },
+  doneSubTodoItem: ({ commit }, { __idx, subTodoItem }) => {
+    const tmpSubTodoItem = JSON.parse(JSON.stringify(subTodoItem));
+    tmpSubTodoItem.status = SUB_TODO_ITEM_STATUS.DONE;
+    commit("UPDATE_SUB_TODO_ITEM", { __idx, subTodoItem: tmpSubTodoItem });
+  },
+  reopenSubTodoItem: ({ commit }, { __idx, subTodoItem }) => {
+    const tmpSubTodoItem = JSON.parse(JSON.stringify(subTodoItem));
+    tmpSubTodoItem.status = SUB_TODO_ITEM_STATUS.UNDO;
+    commit("UPDATE_SUB_TODO_ITEM", { __idx, subTodoItem: tmpSubTodoItem });
+  },
+  deleteSubTodoItem: ({ commit }, { __idx, subTodoItem }) => {
+    const tmpSubTodoItem = JSON.parse(JSON.stringify(subTodoItem));
+    tmpSubTodoItem.status = SUB_TODO_ITEM_STATUS.DELETED;
+    commit("UPDATE_SUB_TODO_ITEM", { __idx, subTodoItem: tmpSubTodoItem });
   },
 };
 
