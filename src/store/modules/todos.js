@@ -154,23 +154,40 @@ const mutations = {
   },
 };
 
+import { addTodoItem, getAll } from "@/api/todos";
+
 // actions
 const actions = {
   ///////////////// todo list /////////////////
   // 在象限头部添加的简单 TODO item FIXME(jx)
   createSimple({ state, commit }, { label, title }) {
-    const time = Math.round(Date.now());
-    commit("CREATE", {
-      __idx: state.list.length,
-      label: label,
-      start: time,
-      end: 0,
-      no: "",
-      tag: "",
-      title: title,
-      projectId: "",
+    // const time = Math.round(Date.now());
+    const todoItem = {
+      priority: 1,
+      percent: 0,
+      seq: 0,
       status: 0,
-      order: time,
+      related: "START",
+      clazz: "PRIVATE",
+      geo: "37.386013;-122.082932",
+
+      dtstart: "2022-01-01T01:50:52.000+00:00",
+      completed: "2022-01-01T01:50:52.000+00:00",
+      due: "2022-01-01T01:50:52.000+00:00",
+      created: "2022-01-01T01:50:52.000+00:00",
+      updated: "2022-01-01T01:50:52.000+00:00",
+      dtstamp: "2022-01-01T01:50:52.000+00:00",
+
+      categories: "APPOINTMENT,EDUCATION",
+      location: "Conference Room - F123, Bldg. 002",
+      organizer: "jxrory@jxrory.com",
+      summary: "我的会议",
+      url: "https://www.jxrory.com",
+      description: "issac 的描述",
+    };
+    addTodoItem(todoItem).then((resp) => {
+      console.log("createSimple", resp);
+      // commit("CREATE", todoItem);
     });
   },
 
@@ -226,9 +243,7 @@ const actions = {
         start: 1639567447,
         end: 0,
         no: "61b893effda33d1560585a1e",
-        tag: "",
         title: "梳理还款逻辑",
-        projectId: "",
         status: 1,
         order: 100000,
         content: "",
@@ -239,9 +254,7 @@ const actions = {
         start: 1639789058,
         end: 0,
         no: "61bd3202f607a45f386456a8",
-        tag: "",
         title: "【TODO】Body页面绘制-拖拽功能",
-        projectId: "",
         status: 0,
         order: 1639789058,
         content: "",
@@ -252,9 +265,7 @@ const actions = {
         start: 1639789051,
         end: 0,
         no: "61bd31fbf607a45f386456a7",
-        tag: "",
         title: "【TODO】Body页面绘制-item绘制",
-        projectId: "",
         status: 0,
         order: 1639789051,
         content: "",
@@ -265,14 +276,17 @@ const actions = {
         start: 1639788896,
         end: 0,
         no: "61bd3160f607a45f386456a5",
-        tag: "",
         title: "【TODO】保存Title输入的数据",
-        projectId: "",
         status: 0,
         order: 100000,
         content: "",
       },
     ];
+
+    // 请求后端数据
+    getAll({ test: "t" }).then((resp) => {
+      console.log(resp);
+    });
 
     // 更新数据
     commit("CREATE", todos);
