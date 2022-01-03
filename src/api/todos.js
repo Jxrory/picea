@@ -21,10 +21,16 @@ export function addTodoItem(todoItem) {
   });
 }
 
-export function getAll(params) {
+/**
+ * 查询今日相关的 todos
+ *
+ * @param {Object} params 查询条件
+ * @returns todos
+ */
+export function getToday(params) {
   return persistencer({
     method: "GET",
-    url: "/todos",
+    url: "/todos/today",
     params: params,
   });
 }

@@ -150,9 +150,9 @@ const mutations = {
 
 import {
   addTodoItem,
-  getAll,
   deleteTodoItem,
   updateTodoItem,
+  getToday,
 } from "@/api/todos";
 
 // actions
@@ -287,7 +287,7 @@ const actions = {
   // 获取 todos
   getTodos: ({ commit }) => {
     // 请求后端数据
-    getAll().then((resp) => {
+    getToday({ includeCompleted: true }).then((resp) => {
       console.log(resp);
       // 更新数据
       commit("CREATE", resp || []);
