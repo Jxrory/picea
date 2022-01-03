@@ -27,8 +27,9 @@ export const SUB_TODO_ITEM_STATUS = {
 };
 
 export const COMMENT_STATUS = {
-  UNDO: 0, // 未完成
-  DONE: 1, // 完成
+  UNDO: 0, // 未审核评论
+  DONE: 1, // 已审核评论
+  NO_PASS: 2, // 审核未通过
   DELETED: 9, // 删除
 };
 
