@@ -10,7 +10,7 @@
       <Plan :start="todoItem.dtstart" :end="todoItem.due" />
       <Priority :priority="todoItem.priority" />
       <!-- <Remind :remind="todoItem.remind" /> -->
-      <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem.subTodos" />
+      <!-- <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem.subTodos" /> -->
       <Comment :__idx="todoItem.__idx" :comments="todoItem.comments" />
     </div>
     <Actions :todoItem="todoItem" />
@@ -23,7 +23,7 @@ import Describe from "./detail/describe";
 import Plan from "./detail/plan";
 import Priority from "./detail/priority";
 // import Remind from "./detail/remind";
-import SubTodo from "./detail/subTodo";
+// import SubTodo from "./detail/subTodo";
 import Comment from "./detail/comment";
 
 import Actions from "./detail/actinons";
@@ -38,7 +38,7 @@ export default {
     Plan,
     Priority,
     // Remind,
-    SubTodo,
+    // SubTodo,
     Comment,
 
     Actions,
