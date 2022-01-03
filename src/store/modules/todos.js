@@ -190,19 +190,6 @@ const actions = {
     });
   },
 
-  // 更新 todo item
-  update: ({ state, commit }, { __idx, key, value }) => {
-    const item = JSON.parse(JSON.stringify(state.list[__idx]));
-
-    if (item[key] !== value) {
-      item[key] = value;
-      updateTodoItem(item).then((resp) => {
-        if (resp || false) {
-          commit("UPDATE_VALUE_BY__IDX", { __idx, key, value });
-        }
-      });
-    }
-  },
   /**
    * 更新TODO Item
    *
@@ -231,15 +218,15 @@ const actions = {
     }
 
     item.priority = priority;
-    updateTodoItem(item).then((resp) => {
-      if (resp || false) {
-        commit("UPDATE_VALUE_BY__IDX", {
-          __idx,
-          key: "priority",
-          value: priority,
-        });
+    return actions.updateItem(
+      { state, commit },
+      {
+        __idx: __idx,
+        data: {
+          priority: priority,
+        },
       }
-    });
+    );
   },
   // 更新 status
   done: ({ state, commit }, __idx) => {

@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { dateFormat } from "@/utils/date";
-
 export default {
   name: "DetailPlan",
 
@@ -19,10 +17,10 @@ export default {
   computed: {
     startDate() {
       console.log("start:", this.start, "  end:", this.end);
-      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.start));
+      return new Date(this.start).toLocaleString();
     },
     endDate() {
-      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.end));
+      return new Date(this.end).toLocaleString();
     },
   },
 };

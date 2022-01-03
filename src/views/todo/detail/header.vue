@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { dateFormat } from "@/utils/date";
 import store from "@/store";
 
 export default {
@@ -25,15 +24,14 @@ export default {
 
   created() {
     this.input = this.title;
-    this.date = dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.start));
+    this.date = new Date(this.start).toLocaleString();
   },
   methods: {
     change() {
       console.log(this.input);
-      store.dispatch("todos/update", {
+      store.dispatch("todos/updateItem", {
         __idx: this.__idx,
-        key: "summary",
-        value: this.input,
+        data: { summary: this.input },
       });
     },
   },

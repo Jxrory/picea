@@ -30,10 +30,9 @@ export default {
   },
   methods: {
     change() {
-      store.dispatch("todos/update", {
+      store.dispatch("todos/updateItem", {
         __idx: this.__idx,
-        key: "description",
-        value: this.input,
+        data: { description: this.input },
       });
     },
   },
