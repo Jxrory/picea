@@ -186,7 +186,7 @@ const actions = {
     };
     addTodoItem(todoItem).then((resp) => {
       console.log("createSimple", resp);
-      // commit("CREATE", todoItem);
+      actions.getTodos({ commit });
     });
   },
 
