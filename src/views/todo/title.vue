@@ -63,16 +63,12 @@ export default {
     saveHandler() {
       console.log("保存内容: " + this.input);
 
-      // 过滤用户未输入数据,导致的添加成功的问题
-      if (this.input && this.input === "") {
-        this.dataInit();
-        return;
+      if (this.input && this.input !== "") {
+        this.$store.dispatch("todos/createSimple", {
+          label: this.label,
+          title: this.input,
+        });
       }
-
-      this.$store.dispatch("todos/createSimple", {
-        label: this.label,
-        title: this.input,
-      });
 
       this.dataInit();
     },
