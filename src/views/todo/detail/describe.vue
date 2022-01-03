@@ -6,6 +6,8 @@
       <textarea
         placeholder="添加详细描述..."
         @change="change"
+        @keyup.enter="keyupEnter"
+        @keyup.delete="keyupEnter"
         v-model="input"
         :rows="rows"
       ></textarea>
@@ -37,6 +39,10 @@ export default {
         __idx: this.__idx,
         data: { description: this.input },
       });
+    },
+
+    keyupEnter() {
+      this.rows = [...this.input].filter((c) => c === "\n").length + 2;
     },
   },
 };
