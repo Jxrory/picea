@@ -7,6 +7,7 @@
         placeholder="添加详细描述..."
         @change="change"
         v-model="input"
+        :rows="rows"
       ></textarea>
     </div>
   </div>
@@ -22,11 +23,13 @@ export default {
   data() {
     return {
       input: "",
+      rows: 0, // 数据行数
     };
   },
 
   created() {
     this.input = this.content || "";
+    this.rows = [...this.input].filter((c) => c === "\n").length + 2;
   },
   methods: {
     change() {
@@ -61,11 +64,13 @@ export default {
     border-radius: 3px;
     resize: none;
     margin-top: 10px;
+    min-height: 77px;
+    max-height: 180px;
 
     &:focus {
       outline: 0;
       background: #fff;
-      height: 100px;
+      // height: 100px;
       border-color: $primary;
     }
   }
