@@ -8,7 +8,7 @@
       />
       <Describe :__idx="todoItem.__idx" :content="todoItem.description" />
       <Plan :start="todoItem.dtstart" :end="todoItem.due" />
-      <!-- <Priority :label="todoItem.label" /> -->
+      <Priority :priority="todoItem.priority" />
       <!-- <Remind :remind="todoItem.remind" /> -->
       <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem.subTodos" />
       <Comment :__idx="todoItem.__idx" :comments="todoItem.comments" />
@@ -21,7 +21,7 @@
 import Header from "./detail/header";
 import Describe from "./detail/describe";
 import Plan from "./detail/plan";
-// import Priority from "./detail/priority";
+import Priority from "./detail/priority";
 // import Remind from "./detail/remind";
 import SubTodo from "./detail/subTodo";
 import Comment from "./detail/comment";
@@ -36,7 +36,7 @@ export default {
     Header,
     Describe,
     Plan,
-    // Priority,
+    Priority,
     // Remind,
     SubTodo,
     Comment,

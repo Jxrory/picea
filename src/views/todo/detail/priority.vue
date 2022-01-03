@@ -11,14 +11,17 @@
 
 <script>
 import store from "@/store";
+import { priority2label } from "@/common/status";
 
 export default {
   name: "DetailPriority",
 
-  props: ["label"],
+  props: ["priority"],
   computed: {
     quadrantConfig() {
-      return store.getters["todos/getQuadrantConfigByLable"](this.label);
+      return store.getters["todos/getQuadrantConfigByLable"](
+        priority2label(this.priority)
+      );
     },
   },
 };
