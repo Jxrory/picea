@@ -20,7 +20,7 @@ import FinishButton from "./finish";
 import PriorityButton from "./priority";
 // import OwnerButton from "./owner";
 import PlanButton from "./plan";
-import RemindButton from "./remind";
+// import RemindButton from "./remind";
 // import AttachButton from "./attach";
 // import WatcherButton from "./watcher";
 // import ArchiveButton from "./archive";
@@ -34,7 +34,7 @@ export default {
     PriorityButton,
     // OwnerButton,
     PlanButton,
-    RemindButton,
+    // RemindButton,
     // AttachButton,
     // WatcherButton,
     // ArchiveButton,
