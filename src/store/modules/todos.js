@@ -191,11 +191,11 @@ const actions = {
   },
 
   // 更新 todo item
-  // TODO(jx) 支持多个{key, value}
   update: ({ state, commit }, { __idx, key, value }) => {
     const item = JSON.parse(JSON.stringify(state.list[__idx]));
 
     if (item[key] !== value) {
+      item[key] = value;
       updateTodoItem(item).then((resp) => {
         if (resp || false) {
           commit("UPDATE_VALUE_BY__IDX", { __idx, key, value });
