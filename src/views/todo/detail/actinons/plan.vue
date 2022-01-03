@@ -72,10 +72,14 @@ export default {
   },
 
   methods: {
-    change: (dateList) => {
-      const start = Math.round(dateList[0].getTime() / 1000);
-      const end = Math.round(dateList[1].getTime() / 1000);
-      store.dispatch("todos/updateStartEnd", { start, end });
+    change(dateList) {
+      const start = dateList[0].toJSON();
+      const end = dateList[1].toJSON();
+      store.dispatch("todos/updateStartEnd", {
+        __idx: this.todoItem.__idx,
+        start: start,
+        end: end,
+      });
     },
   },
 };

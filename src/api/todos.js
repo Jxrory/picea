@@ -13,11 +13,11 @@ import persistencer from "./persistencer";
  *
  * @param {*} params
  */
-export function addTodoItem(data) {
+export function addTodoItem(todoItem) {
   return persistencer({
-    method: "post",
+    method: "POST",
     url: "/todos",
-    data: data,
+    data: todoItem,
   });
 }
 
@@ -26,5 +26,32 @@ export function getAll(params) {
     method: "GET",
     url: "/todos",
     params: params,
+  });
+}
+
+/**
+ * 删除一个 Todo Item by id
+ *
+ * @param {String} uid id
+ * @returns true or false
+ */
+export function deleteTodoItem(uid) {
+  return persistencer({
+    method: "DELETE",
+    url: "/todos/" + uid,
+  });
+}
+
+/**
+ * 更新 TODO Item
+ *
+ * @param {Object} todoItem
+ * @returns true | false
+ */
+export function updateTodoItem(todoItem) {
+  return persistencer({
+    method: "PUT",
+    url: "/todos/" + todoItem.uid,
+    data: todoItem,
   });
 }

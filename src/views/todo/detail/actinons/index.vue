@@ -5,9 +5,8 @@
     <FinishButton :todoItem="todoItem" />
     <PriorityButton :todoItem="todoItem" />
     <!-- <OwnerButton :todoItem="todoItem" /> -->
-    <!-- 继续修改 TODO(jx) -->
     <PlanButton :todoItem="todoItem" />
-    <RemindButton :todoItem="todoItem" />
+    <!-- <RemindButton :todoItem="todoItem" /> -->
     <!-- <AttachButton :todoItem="todoItem" /> -->
     <!-- <WatcherButton :todoItem="todoItem" /> -->
     <!-- 归档?? 啥子意思呢? 先不要了 -->

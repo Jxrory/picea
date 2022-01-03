@@ -6,7 +6,7 @@
     ></Title>
     <div class="body">
       <!-- 不要添加 [tag="transition-group"], 存在 bug 卡了半天... -->
-      <draggable v-model="todoList" group="todoList" item-key="no">
+      <draggable v-model="todoList" group="todoList" item-key="uid">
         <!-- [keng] 只能用 element ... -->
         <template #item="{ element }">
           <Thing :todoItem="element"></Thing>

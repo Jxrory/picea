@@ -7,7 +7,7 @@
       :style="'color:' + item.color"
       @click="changePriority(item.label)"
     >
-      <span class="iconfont" v-if="item.label === todoItem.label"
+      <span class="iconfont" v-if="item.label === toLabel(todoItem.priority)"
         >&#xe7fc;</span
       >
       <span class="iconfont" v-else>&#xe780;</span>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { priority2label } from "@/common/status";
+
 export default {
   name: "Priority",
 
@@ -46,6 +48,11 @@ export default {
       });
 
       this.visible = false;
+    },
+
+    // 转换为 label
+    toLabel(priority) {
+      return priority2label(priority);
     },
   },
 };

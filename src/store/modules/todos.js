@@ -1,31 +1,12 @@
 // imports
-
-//////// todo item 状态 ////////
-const TODO_ITEM_STATUS = {
-  UNDO: 0, // 未完成
-  DONE: 1, // 完成
-  DELETED: 9, // 删除
-};
-
-const SUB_TODO_ITEM_STATUS = {
-  UNDO: 0, // 未完成
-  DONE: 1, // 完成
-  DELETED: 9, // 删除
-};
-
-const COMMENT_STATUS = {
-  UNDO: 0, // 未完成
-  DONE: 1, // 完成
-  DELETED: 9, // 删除
-};
-
-//////// todo item label ////////
-const TODO_ITEM_LABEL = {
-  A: "a",
-  B: "b",
-  C: "c",
-  D: "d",
-};
+import {
+  TODO_ITEM_STATUS,
+  SUB_TODO_ITEM_STATUS,
+  COMMENT_STATUS,
+  TODO_ITEM_LABEL,
+  LABEL_TO_PRIORITY,
+  label2priority,
+} from "@/common/status";
 
 // initial state
 // shape:
@@ -63,7 +44,9 @@ const getters = {
   // 根据象限 label 获取 todoList
   getListByLabel: (state) => (label) => {
     return state.list.filter(
-      (todo) => todo.status !== TODO_ITEM_STATUS.DELETED && todo.label === label
+      (todo) =>
+        todo.status !== TODO_ITEM_STATUS.CANCELLED &&
+        LABEL_TO_PRIORITY[label].indexOf(todo.priority) > -1
     );
   },
 
@@ -78,7 +61,7 @@ const getters = {
   // 获取 subTodos
   getSubTodosByIdx: (state) => (__idx) => {
     return state.list[__idx].subTodos.filter(
-      (item) => item.status !== SUB_TODO_ITEM_STATUS.DELETED
+      (item) => item.status !== SUB_TODO_ITEM_STATUS.CANCELLED
     );
   },
 
@@ -88,7 +71,7 @@ const getters = {
       return [];
     }
     return state.list[__idx].comments.filter(
-      (item) => item.status !== COMMENT_STATUS.DELETED
+      (item) => item.status !== COMMENT_STATUS.CANCELLED
     );
   },
 };
@@ -103,6 +86,17 @@ const mutations = {
       todoList[i]["subTodos"] = todoList["subTodos"] || [];
     }
     state.list = todoList;
+  },
+
+  UPDATE_TODO_ITEM_BY__IDX: (state, { __idx, item }) => {
+    if (state.list.length <= __idx) {
+      console.error(
+        "UPDATE_TODO_ITEM_BY__IDX index out of range!!! __idx=" + __idx
+      );
+      return;
+    }
+
+    state.list[__idx] = item;
   },
 
   UPDATE_VALUE_BY__IDX: (state, { __idx, key, value }) => {
@@ -123,7 +117,7 @@ const mutations = {
       console.error("DELETE_BY__IDX index out of range!!! __idx=" + __idx);
       return;
     }
-    state.list[__idx]["status"] = TODO_ITEM_STATUS.DELETED;
+    state.list[__idx]["status"] = TODO_ITEM_STATUS.CANCELLED;
   },
 
   ///////////// Sub Todo List /////////////
@@ -154,36 +148,41 @@ const mutations = {
   },
 };
 
-import { addTodoItem, getAll } from "@/api/todos";
+import {
+  addTodoItem,
+  getAll,
+  deleteTodoItem,
+  updateTodoItem,
+} from "@/api/todos";
 
 // actions
 const actions = {
   ///////////////// todo list /////////////////
   // 在象限头部添加的简单 TODO item FIXME(jx)
   createSimple({ state, commit }, { label, title }) {
-    // const time = Math.round(Date.now());
+    const nowTime = new Date().toJSON();
     const todoItem = {
-      priority: 1,
+      priority: label2priority(label),
       percent: 0,
       seq: 0,
       status: 0,
       related: "START",
       clazz: "PRIVATE",
-      geo: "37.386013;-122.082932",
+      geo: "",
 
-      dtstart: "2022-01-01T01:50:52.000+00:00",
-      completed: "2022-01-01T01:50:52.000+00:00",
-      due: "2022-01-01T01:50:52.000+00:00",
-      created: "2022-01-01T01:50:52.000+00:00",
-      updated: "2022-01-01T01:50:52.000+00:00",
-      dtstamp: "2022-01-01T01:50:52.000+00:00",
+      dtstart: nowTime,
+      // completed: "",
+      // due: "",
+      created: nowTime,
+      updated: nowTime,
+      dtstamp: nowTime,
 
-      categories: "APPOINTMENT,EDUCATION",
-      location: "Conference Room - F123, Bldg. 002",
-      organizer: "jxrory@jxrory.com",
-      summary: "我的会议",
-      url: "https://www.jxrory.com",
-      description: "issac 的描述",
+      categories: "",
+      location: "",
+      organizer: "",
+      summary: title,
+      url: "",
+      description: "",
     };
     addTodoItem(todoItem).then((resp) => {
       console.log("createSimple", resp);
@@ -191,105 +190,121 @@ const actions = {
     });
   },
 
-  // 更新提醒时间
-  update: ({ commit }, { __idx, key, value }) => {
-    commit("UPDATE_VALUE_BY__IDX", { __idx, key, value });
+  // 更新 todo item
+  // TODO(jx) 支持多个{key, value}
+  update: ({ state, commit }, { __idx, key, value }) => {
+    const item = JSON.parse(JSON.stringify(state.list[__idx]));
+
+    if (item[key] !== value) {
+      updateTodoItem(item).then((resp) => {
+        if (resp || false) {
+          commit("UPDATE_VALUE_BY__IDX", { __idx, key, value });
+        }
+      });
+    }
   },
-  // 更新 label
-  updateLabel: ({ commit }, { __idx, label }) => {
-    commit("UPDATE_VALUE_BY__IDX", { __idx, key: "label", value: label });
+  /**
+   * 更新TODO Item
+   *
+   * @param {*} __idx
+   * @param {*} data
+   */
+  updateItem: ({ state, commit }, { __idx, data }) => {
+    const item = JSON.parse(JSON.stringify(state.list[__idx]));
+
+    // js 对象 合并
+    const newItem = Object.assign(item, data);
+
+    updateTodoItem(newItem).then((resp) => {
+      if (resp || false) {
+        commit("UPDATE_TODO_ITEM_BY__IDX", { __idx, item: newItem });
+      }
+    });
+  },
+  // 更新: 优先级
+  updateLabel: ({ state, commit }, { __idx, label }) => {
+    console.log("updateLabel __idx: ", __idx, "  label: ", label);
+    const item = JSON.parse(JSON.stringify(state.list[__idx]));
+    const priority = label2priority(label);
+    if (priority === item.priority) {
+      return;
+    }
+
+    item.priority = priority;
+    updateTodoItem(item).then((resp) => {
+      if (resp || false) {
+        commit("UPDATE_VALUE_BY__IDX", {
+          __idx,
+          key: "priority",
+          value: priority,
+        });
+      }
+    });
   },
   // 更新 status
-  done: ({ commit }, __idx) => {
-    commit("UPDATE_VALUE_BY__IDX", {
-      __idx,
-      key: "status",
-      value: TODO_ITEM_STATUS.DONE,
-    });
+  done: ({ state, commit }, __idx) => {
+    console.log("done __idx: ", __idx);
+    return actions.updateItem(
+      { state, commit },
+      {
+        __idx: __idx,
+        data: {
+          status: TODO_ITEM_STATUS.COMPLETED,
+          completed: new Date().toJSON(),
+        },
+      }
+    );
   },
-  reopen: ({ commit }, __idx) => {
-    commit("UPDATE_VALUE_BY__IDX", {
-      __idx,
-      key: "status",
-      value: TODO_ITEM_STATUS.UNDO,
-    });
+  reopen: ({ state, commit }, __idx) => {
+    console.log("reopen __idx: ", __idx);
+    return actions.updateItem(
+      { state, commit },
+      {
+        __idx: __idx,
+        data: { status: TODO_ITEM_STATUS["IN-PROCESS"] },
+      }
+    );
   },
   // 更新开始时间和结束时间
-  updateStartEnd: ({ commit }, { __idx, start, end }) => {
-    if (start > 0) {
-      commit("UPDATE_VALUE_BY__IDX", { __idx, key: "start", value: start });
-    }
-    if (end > 0) {
-      commit("UPDATE_VALUE_BY__IDX", { __idx, key: "end", value: end });
+  updateStartEnd: ({ state, commit }, { __idx, start, end }) => {
+    const item = JSON.parse(JSON.stringify(state.list[__idx]));
+    const startChangeFlag = start && start !== "" && start !== item.dtstart;
+    const endChangeFlag = end && end !== "" && end !== item.due;
+
+    if (startChangeFlag || endChangeFlag) {
+      item.dtstart = start;
+      item.due = end;
+
+      return actions.updateItem(
+        { state, commit },
+        { __idx: __idx, data: item }
+      );
     }
   },
-  // 更新提醒时间
+  // 更新提醒时间, 新的 TODO 没有提醒 :)
   updateRemind: ({ commit }, { __idx, remind }) => {
-    commit("UPDATE_VALUE_BY__IDX", { __idx, key: "remind", value: remind });
+    console.log("id: ", __idx, "  remind: ", remind);
+    // commit("UPDATE_VALUE_BY__IDX", { __idx, key: "remind", value: remind });
   },
 
   // 删除一个 todo item
-  delete: ({ commit }, __idx) => {
-    commit("DELETE_BY__IDX", __idx);
+  delete: ({ state, commit }, __idx) => {
+    deleteTodoItem(state.list[__idx].uid).then((resp) => {
+      if (resp || false) {
+        // 前端临时删除, 等待重新请求数据后刷新
+        commit("DELETE_BY__IDX", __idx);
+      }
+    });
   },
 
   // 获取 todos
   getTodos: ({ commit }) => {
-    // 获取后端数据 TODO(jx)
-    const todos = [
-      {
-        __idx: 0,
-        label: "a",
-        start: 1639567447,
-        end: 0,
-        no: "61b893effda33d1560585a1e",
-        title: "梳理还款逻辑",
-        status: 1,
-        order: 100000,
-        content: "",
-      },
-      {
-        __idx: 1,
-        label: "b",
-        start: 1639789058,
-        end: 0,
-        no: "61bd3202f607a45f386456a8",
-        title: "【TODO】Body页面绘制-拖拽功能",
-        status: 0,
-        order: 1639789058,
-        content: "",
-      },
-      {
-        __idx: 2,
-        label: "b",
-        start: 1639789051,
-        end: 0,
-        no: "61bd31fbf607a45f386456a7",
-        title: "【TODO】Body页面绘制-item绘制",
-        status: 0,
-        order: 1639789051,
-        content: "",
-      },
-      {
-        __idx: 3,
-        label: "d",
-        start: 1639788896,
-        end: 0,
-        no: "61bd3160f607a45f386456a5",
-        title: "【TODO】保存Title输入的数据",
-        status: 0,
-        order: 100000,
-        content: "",
-      },
-    ];
-
     // 请求后端数据
-    getAll({ test: "t" }).then((resp) => {
+    getAll().then((resp) => {
       console.log(resp);
+      // 更新数据
+      commit("CREATE", resp || []);
     });
-
-    // 更新数据
-    commit("CREATE", todos);
   },
 
   //////////////// sub todos ////////////////

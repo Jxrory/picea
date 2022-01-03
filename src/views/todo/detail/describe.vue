@@ -32,7 +32,7 @@ export default {
     change() {
       store.dispatch("todos/update", {
         __idx: this.__idx,
-        key: "content",
+        key: "description",
         value: this.input,
       });
     },

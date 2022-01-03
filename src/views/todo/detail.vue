@@ -3,13 +3,13 @@
     <div class="detail-body">
       <Header
         :__idx="todoItem.__idx"
-        :title="todoItem.title"
-        :start="todoItem.start"
+        :title="todoItem.summary"
+        :start="todoItem.dtstart"
       />
-      <Describe :__idx="todoItem.__idx" :content="todoItem.content" />
-      <Plan :start="todoItem.start" :end="todoItem.end" />
-      <Priority :label="todoItem.label" />
-      <Remind :remind="todoItem.remind" />
+      <Describe :__idx="todoItem.__idx" :content="todoItem.description" />
+      <Plan :start="todoItem.dtstart" :end="todoItem.due" />
+      <!-- <Priority :label="todoItem.label" /> -->
+      <!-- <Remind :remind="todoItem.remind" /> -->
       <SubTodo :__idx="todoItem.__idx" :subTodos="todoItem.subTodos" />
       <Comment :__idx="todoItem.__idx" :comments="todoItem.comments" />
     </div>
@@ -21,8 +21,8 @@
 import Header from "./detail/header";
 import Describe from "./detail/describe";
 import Plan from "./detail/plan";
-import Priority from "./detail/priority";
-import Remind from "./detail/remind";
+// import Priority from "./detail/priority";
+// import Remind from "./detail/remind";
 import SubTodo from "./detail/subTodo";
 import Comment from "./detail/comment";
 
@@ -36,8 +36,8 @@ export default {
     Header,
     Describe,
     Plan,
-    Priority,
-    Remind,
+    // Priority,
+    // Remind,
     SubTodo,
     Comment,
 

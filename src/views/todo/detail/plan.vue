@@ -2,9 +2,9 @@
   <div class="detail-header">
     <span class="iconfont">&#xe621;</span>
     <span class="content"
-      >计划完成时间：{{ startDate }}
+      >计划时间：{{ startDate }}
       <!-- 完成时间可能不存在 -->
-      <span v-if="end > 0"> ~ {{ endDate }}</span>
+      <span v-if="end && end !== ''"> ~ {{ endDate }}</span>
     </span>
   </div>
 </template>
@@ -18,10 +18,11 @@ export default {
   props: ["start", "end"],
   computed: {
     startDate() {
-      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.start * 1000));
+      console.log("start:", this.start, "  end:", this.end);
+      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.start));
     },
     endDate() {
-      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.end * 1000));
+      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.end));
     },
   },
 };

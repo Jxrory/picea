@@ -1,14 +1,14 @@
 <template>
-  <div class="thing" :key="todoItem.no">
-    <span class="iconfont iconfont-color" v-if="!todoItem.status" @click="done"
+  <div class="thing">
+    <span class="iconfont iconfont-color" v-if="isNeedDone" @click="done"
       >&#xe601;</span
     >
-    <span class="iconfont iconfont-color" v-else @click="reopen">&#xe669;</span>
-    <span
-      :class="todoItem.status ? 'title-done' : 'title-undo'"
-      @click="showDetail"
-      >{{ todoItem.title }}</span
+    <span class="iconfont iconfont-color" v-if="isDone" @click="reopen"
+      >&#xe669;</span
     >
+    <span :class="isDone ? 'title-done' : 'title-undo'" @click="showDetail">{{
+      todoItem.summary
+    }}</span>
 
     <el-dialog v-model="isShowDetail" title="" width="55%" top="5vh">
       <Detail :todoItem="todoItem"></Detail>
@@ -18,6 +18,8 @@
 
 <script>
 import Detail from "./detail.vue";
+
+import { todoItemIsDone, todoItemCanDone } from "@/common/status";
 
 export default {
   name: "Thing",
@@ -34,6 +36,21 @@ export default {
       isShowDetail: false,
     };
   },
+  computed: {
+    // 是否已经完成
+    isDone: {
+      get() {
+        return todoItemIsDone(this.todoItem.status);
+      },
+    },
+
+    // 状态是否可以转换到完成状态
+    isNeedDone: {
+      get() {
+        return todoItemCanDone(this.todoItem.status);
+      },
+    },
+  },
 
   methods: {
     // 完成 todoItem
@@ -47,8 +64,7 @@ export default {
     },
 
     // 点击 todoItem Title 后, 展示详细信息
-    showDetail(todoItem) {
-      console.log(todoItem);
+    showDetail() {
       this.isShowDetail = true;
     },
   },

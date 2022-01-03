@@ -25,14 +25,14 @@ export default {
 
   created() {
     this.input = this.title;
-    this.date = dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.start * 1000));
+    this.date = dateFormat("YYYY-mm-dd HH:MM:SS", new Date(this.start));
   },
   methods: {
     change() {
       console.log(this.input);
       store.dispatch("todos/update", {
         __idx: this.__idx,
-        key: "title",
+        key: "summary",
         value: this.input,
       });
     },
