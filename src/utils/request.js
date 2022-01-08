@@ -14,9 +14,9 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  (request) => {
+  async (request) => {
     // 发送请求之前做的
-    const bearer = store.dispatch("user/getBearerToken");
+    const bearer = await store.dispatch("user/getBearerToken");
     if (bearer) {
       request.headers["Authorization"] = bearer;
     }

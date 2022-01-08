@@ -46,7 +46,7 @@ const actions = {
     }
   },
 
-  getBearerToken: ({ state, commit }) => {
+  getBearerToken({ state, commit }) {
     if (state.token) {
       return "Bearer " + state.token;
     }
