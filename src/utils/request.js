@@ -2,6 +2,7 @@ import "element-plus/es/components/message/style/css";
 
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import store from "@/store";
 
 const VUE_APP_API_URL = process.env.VUE_APP_BASE_API || `${location.origin}`;
 
@@ -17,10 +18,10 @@ service.interceptors.request.use(
     console.log(request.method);
 
     // 发送请求之前做的
-    // const token = !store.getters.token?sessionStorage.getItem('token'):store.getters.token;
-    // if (token) {
-    //   request.headers['Authori-zation'] = token
-    // }
+    const bearer = store.getters("user/getBearerToken");
+    if (bearer) {
+      request.headers["Authorization"] = bearer;
+    }
     return request;
   },
   (error) => {
