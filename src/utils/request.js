@@ -3,6 +3,7 @@ import "element-plus/es/components/message/style/css";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import store from "@/store";
+import router from "@/router";
 
 const VUE_APP_API_URL = process.env.VUE_APP_BASE_API || `${location.origin}`;
 
@@ -49,7 +50,8 @@ service.interceptors.response.use(
     const resp = error.response;
     switch (resp?.status) {
       case 401: // Unauthorized
-        // re-login
+        // 鉴权失败, 让用户跳转至登录页, 不让用户回退至这个页面
+        router.replace("/login");
         break;
       case 400: // Bad Request
       case 417: // Expectation Failed (业务异常)
