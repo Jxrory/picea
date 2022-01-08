@@ -4,7 +4,12 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    redirect: "/todo",
+    redirect: "/login",
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/login"),
   },
   {
     path: "/todo",
