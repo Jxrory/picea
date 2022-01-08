@@ -47,7 +47,7 @@ const actions = {
 
       if (resp.token != "") {
         commit("SET_TOKEN", resp.token);
-        localStorage.setItem("AuthorizationToken", token);
+        localStorage.setItem("AuthorizationToken", resp.token);
         return { success: true };
       } else {
         return { success: false };
