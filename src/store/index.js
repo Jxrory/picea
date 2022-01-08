@@ -1,5 +1,6 @@
 import { createStore, createLogger } from "vuex";
 
+import user from "./modules/user";
 import todos from "./modules/todos";
 
 // // https://webpack.js.org/guides/dependency-management/#requirecontext
@@ -19,6 +20,7 @@ const debug = process.env.NODE_ENV !== "production";
 
 export default createStore({
   modules: {
+    user,
     todos,
   },
   strict: debug,

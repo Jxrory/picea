@@ -1,4 +1,7 @@
+import "element-plus/es/components/message/style/css";
+
 import axios from "axios";
+import { ElMessage } from "element-plus";
 
 const VUE_APP_API_URL = process.env.VUE_APP_BASE_API || `${location.origin}`;
 
@@ -44,7 +47,20 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    console.log(error);
+    // console.log("request.js response error:", error.response);
+    const resp = error.response;
+    switch (resp.status) {
+      case 401: // Unauthorized
+        // re-login
+        break;
+      case 400: // Bad Request
+      case 417: // Expectation Failed (业务异常)
+        ElMessage({ showClose: true, message: resp.data, type: "error" });
+        break;
+      default:
+        break;
+    }
+    return Promise.reject(error);
   }
 );
 

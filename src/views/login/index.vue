@@ -16,11 +16,10 @@
           type="password"
           placeholder="密码"
           v-model="password"
+          @keyup.enter="submit"
         />
         <div>
-          <button id="submit-btn" @click="submit" @keyup.enter="submit">
-            登 录
-          </button>
+          <button id="submit-btn" @click="submit">登 录</button>
         </div>
       </div>
     </div>
@@ -28,6 +27,8 @@
 </template>
 
 <script>
+import store from "@/store";
+import router from "@/router";
 export default {
   name: "Login",
 
@@ -39,9 +40,19 @@ export default {
   },
 
   methods: {
-    submit() {
+    async submit() {
       // 登录成功跳转到主页面
-      console.log("username:", this.username, "  password:", this.password);
+      const resp = await store.dispatch("user/login", {
+        username: this.username,
+        password: this.password,
+      });
+
+      console.log("login page resp:", resp);
+
+      if (resp?.success) {
+        // 登录成功
+        router.push("/todo");
+      }
     },
   },
 };
