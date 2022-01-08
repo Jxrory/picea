@@ -7,19 +7,7 @@ const state = () => ({
 });
 
 // getters
-const getters = {
-  getToken: (state) => {
-    if (state.token) {
-      return state.token;
-    }
-    const token = localStorage.getItem("AuthorizationToken");
-    state.token = token || "";
-    return token;
-  },
-  getBearerToken: (state) => {
-    return "Bearer " + getters.getToken(state);
-  },
-};
+const getters = {};
 
 // mutations
 const mutations = {
@@ -56,6 +44,17 @@ const actions = {
       console.log("store actions login err: ", err);
       return { success: false, ...err?.response?.data };
     }
+  },
+
+  getBearerToken: ({ state, commit }) => {
+    if (state.token) {
+      return "Bearer " + state.token;
+    }
+
+    const token = localStorage.getItem("AuthorizationToken");
+
+    commit("SET_TOKEN", token || "");
+    return "Bearer " + state.token;
   },
 };
 

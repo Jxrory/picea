@@ -14,11 +14,8 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   (request) => {
-    // 请求头
-    console.log(request.method);
-
     // 发送请求之前做的
-    const bearer = store.getters("user/getBearerToken");
+    const bearer = store.dispatch("user/getBearerToken");
     if (bearer) {
       request.headers["Authorization"] = bearer;
     }
@@ -50,7 +47,7 @@ service.interceptors.response.use(
   (error) => {
     // console.log("request.js response error:", error.response);
     const resp = error.response;
-    switch (resp.status) {
+    switch (resp?.status) {
       case 401: // Unauthorized
         // re-login
         break;
@@ -59,6 +56,7 @@ service.interceptors.response.use(
         ElMessage({ showClose: true, message: resp.data, type: "error" });
         break;
       default:
+        console.log(error);
         break;
     }
     return Promise.reject(error);
