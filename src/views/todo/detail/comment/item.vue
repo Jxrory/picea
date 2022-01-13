@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { dateFormat } from "@/utils/date";
-
 export default {
   name: "CommentItem",
 
@@ -21,7 +19,7 @@ export default {
   methods: {
     format(dateTime) {
       console.log("dateTime: ", dateTime);
-      return dateFormat("YYYY-mm-dd HH:MM:SS", new Date(dateTime));
+      return new Date(dateTime).toLocaleString();
     },
   },
 };
