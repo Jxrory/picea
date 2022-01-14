@@ -1,5 +1,6 @@
 import { createStore, createLogger } from "vuex";
 
+import config from "./modules/config";
 import user from "./modules/user";
 import todos from "./modules/todos";
 
@@ -20,6 +21,7 @@ const debug = process.env.NODE_ENV !== "production";
 
 export default createStore({
   modules: {
+    config,
     user,
     todos,
   },
