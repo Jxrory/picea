@@ -12,3 +12,16 @@ export function login(data) {
     data: data,
   });
 }
+
+/**
+ * 获取用户信息
+ *
+ * @param {String} uid 用户id
+ * @returns
+ */
+export function getUserInfo(uid) {
+  return request({
+    method: "GET",
+    url: "/users/" + uid,
+  });
+}

@@ -12,6 +12,7 @@
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "element-plus": "^1.2.0-beta.6",
+    "jwt-decode": "^3.1.2",
     "vue": "^3.2.26",
     "vue-router": "^4.0.0-0",
     "vuedraggable": "^4.1.0",

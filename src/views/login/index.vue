@@ -51,6 +51,7 @@ export default {
 
       if (resp?.success) {
         // 登录成功
+        await store.dispatch("user/loginSuccessHook");
         router.push("/todo");
       }
     },
