@@ -21,7 +21,7 @@ const getters = {
     return state.user;
   },
   userId(state) {
-    return state.user.uid;
+    return state.user?.uid;
   },
 };
 
@@ -47,14 +47,13 @@ const actions = {
    * @param {String} password 密码
    * @returns
    */
-  async login({ state, commit }, { username, password }) {
+  async login({ commit }, { username, password }) {
     try {
       const resp = await login({ username, password });
 
       if (resp.token != "") {
         commit("SET_TOKEN", resp.token);
         localStorage.setItem("AuthorizationToken", resp.token);
-        commit("SET_USER", resp.user);
         return { success: true };
       } else {
         return { success: false };
@@ -68,9 +67,9 @@ const actions = {
   /**
    * 登录成功 Hook
    */
-  async loginSuccessHook({ state, commit }) {
+  async loginSuccessHook({ dispatch }) {
     // 获取用户信息
-    await actions.getUser({ state, commit });
+    await dispatch("getUser");
   },
 
   /**
@@ -81,14 +80,14 @@ const actions = {
   getBearerToken({ state, commit }, { isNotBearer = false } = {}) {
     const prefixToken = isNotBearer ? "" : "Bearer ";
 
-    if (state.token) {
+    if (state.token && state.token !== "") {
       return prefixToken + state.token;
     }
 
     const token = localStorage.getItem("AuthorizationToken");
 
     if (token && token !== "") {
-      commit("SET_TOKEN", token || "");
+      commit("SET_TOKEN", token);
       return prefixToken + state.token;
     }
 
@@ -103,17 +102,14 @@ const actions = {
    *
    * @returns String 用户Id
    */
-  getUserId({ state, commit }) {
-    const userId = getters.userId(state);
+  async getUserId({ state, dispatch }) {
+    const userId = state.user?.uid;
     if (userId && userId !== "") {
       return userId;
     }
 
     // 获取 token 解析出 用户Id
-    const token = actions.getBearerToken(
-      { state, commit },
-      { isNotBearer: true }
-    );
+    const token = await dispatch("getBearerToken", { isNotBearer: true });
     const content = jwtDecode(token);
     return content.aud;
   },
@@ -123,17 +119,17 @@ const actions = {
    *
    * @returns user info
    */
-  async getUser({ state, commit }) {
+  async getUser({ state, commit, dispatch }) {
     const user = state.user;
     if (user && user.uid && user.uid !== "") {
       return user;
     }
 
-    const uid = actions.getUserId({ state, commit });
+    const uid = await dispatch("getUserId");
 
     const userResp = await getUserInfo(uid);
     commit("SET_USER", userResp);
-    return state.user;
+    return getters.user(state);
   },
 
   /**
@@ -141,8 +137,8 @@ const actions = {
    *
    * @param {string} workspaceId 工作空间Id
    */
-  async changeWorkspace({ state, commit }, workspaceId) {
-    const user = await actions.getUser({ state, commit });
+  async changeWorkspace({ commit, dispatch }, workspaceId) {
+    const user = await dispatch("getUser");
 
     const userUpdate = JSON.parse(JSON.stringify(user));
     userUpdate.workspaceId = workspaceId;

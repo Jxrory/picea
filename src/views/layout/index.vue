@@ -1,10 +1,5 @@
 <template>
-  <div class="layout">
-    <LayoutHeader />
-    <div class="layout-body">
-      <router-view />
-    </div>
-  </div>
+  <router-view />
 
   <!-- <el-dialog v-model="showSeachCenter" :show-close="false" width="50%">
     <SearchCenter />
@@ -14,14 +9,12 @@
 <script>
 import store from "@/store";
 // import SearchCenter from "./center.vue";
-import LayoutHeader from "./header.vue";
 
 export default {
   name: "Layout",
 
   components: {
     // SearchCenter,
-    LayoutHeader,
   },
 
   computed: {
@@ -66,13 +59,5 @@ body,
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-.layout {
-  width: 100%;
-  height: 100%;
-
-  display: grid;
-  grid-template-rows: 35px 1fr;
 }
 </style>

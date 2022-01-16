@@ -8,6 +8,14 @@ import {
   label2priority,
 } from "@/common/status";
 
+import {
+  addTodoItem,
+  deleteTodoItem,
+  updateTodoItem,
+  getToday,
+} from "@/api/todos";
+import store from "..";
+
 // initial state
 // shape:
 //
@@ -106,7 +114,6 @@ const mutations = {
       );
       return;
     }
-    console.log(state.list[__idx]);
     state.list[__idx][key] = value;
   },
 
@@ -122,12 +129,10 @@ const mutations = {
 
   ///////////// Sub Todo List /////////////
   ADD_SUB_TODO_ITEM: (state, { __idx, subTodoItem }) => {
-    console.log(state.list[__idx]);
     // subTodoItem.id = Date.now(); // NOTICE: id 都一样???
     state.list[__idx].subTodos.push(subTodoItem);
   },
   UPDATE_SUB_TODO_ITEM: (state, { __idx, subTodoItem }) => {
-    console.log(state.list[__idx]);
     if (subTodoItem && subTodoItem.id && subTodoItem.id > 0) {
       const subTodoIdx = state.list[__idx].subTodos.findIndex(
         (item) => item.id === subTodoItem.id
@@ -143,25 +148,17 @@ const mutations = {
     if (!state.list[__idx].comments) {
       state.list[__idx].comments = [];
     }
-    console.log("__idx: ", __idx, "\tcomments:", state.list[__idx].comments);
     state.list[__idx].comments.push(comment);
   },
 };
-
-import {
-  addTodoItem,
-  deleteTodoItem,
-  updateTodoItem,
-  getToday,
-} from "@/api/todos";
-import user from "./user";
 
 // actions
 const actions = {
   ///////////////// todo list /////////////////
   // 在象限头部添加的简单 TODO item
-  async createSimple({ state, commit }, { label, title }) {
-    const u = await user.actions.getUser({ state, commit });
+  async createSimple({ state, commit, dispatch }, { label, title }) {
+    const u = await store.dispatch("user/getUser");
+    console.log("todos createSimple user:", u);
 
     const nowTime = new Date().toJSON();
     const todoItem = {
@@ -189,8 +186,7 @@ const actions = {
       description: "",
     };
     addTodoItem(todoItem).then((resp) => {
-      console.log("createSimple", resp);
-      actions.getTodos({ commit });
+      dispatch("getTodos");
     });
   },
 
@@ -213,7 +209,7 @@ const actions = {
     });
   },
   // 更新: 优先级
-  updateLabel: ({ state, commit }, { __idx, label }) => {
+  updateLabel: ({ state, commit, dispatch }, { __idx, label }) => {
     console.log("updateLabel __idx: ", __idx, "  label: ", label);
     const item = JSON.parse(JSON.stringify(state.list[__idx]));
     const priority = label2priority(label);
@@ -222,42 +218,33 @@ const actions = {
     }
 
     item.priority = priority;
-    return actions.updateItem(
-      { state, commit },
-      {
-        __idx: __idx,
-        data: {
-          priority: priority,
-        },
-      }
-    );
+    dispatch("updateItem", {
+      __idx: __idx,
+      data: {
+        priority: priority,
+      },
+    });
   },
   // 更新 status
-  done: ({ state, commit }, __idx) => {
+  done: ({ state, commit, dispatch }, __idx) => {
     console.log("done __idx: ", __idx);
-    return actions.updateItem(
-      { state, commit },
-      {
-        __idx: __idx,
-        data: {
-          status: TODO_ITEM_STATUS.COMPLETED,
-          completed: new Date().toJSON(),
-        },
-      }
-    );
+    dispatch("updateItem", {
+      __idx: __idx,
+      data: {
+        status: TODO_ITEM_STATUS.COMPLETED,
+        completed: new Date().toJSON(),
+      },
+    });
   },
-  reopen: ({ state, commit }, __idx) => {
+  reopen: ({ state, commit, dispatch }, __idx) => {
     console.log("reopen __idx: ", __idx);
-    return actions.updateItem(
-      { state, commit },
-      {
-        __idx: __idx,
-        data: { status: TODO_ITEM_STATUS["IN-PROCESS"] },
-      }
-    );
+    dispatch("updateItem", {
+      __idx: __idx,
+      data: { status: TODO_ITEM_STATUS["IN-PROCESS"] },
+    });
   },
   // 更新开始时间和结束时间
-  updateStartEnd: ({ state, commit }, { __idx, start, end }) => {
+  updateStartEnd: ({ state, commit, dispatch }, { __idx, start, end }) => {
     const item = JSON.parse(JSON.stringify(state.list[__idx]));
     const startChangeFlag = start && start !== "" && start !== item.dtstart;
     const endChangeFlag = end && end !== "" && end !== item.due;
@@ -266,10 +253,7 @@ const actions = {
       item.dtstart = start;
       item.due = end;
 
-      return actions.updateItem(
-        { state, commit },
-        { __idx: __idx, data: item }
-      );
+      dispatch("updateItem", { __idx: __idx, data: item });
     }
   },
   // 更新提醒时间, 新的 TODO 没有提醒 :)
@@ -289,15 +273,14 @@ const actions = {
   },
 
   // 获取 todos
-  getTodos: ({ state, commit }) => {
-    const u = user.actions.getUser({ state, commit });
+  async getTodos({ state, commit, dispatch }) {
+    const u = await store.dispatch("user/getUser");
     const params = {
       workspaceId: u.workspaceId,
       includeCompleted: true,
     };
     // 请求后端数据
     getToday(params).then((resp) => {
-      console.log(resp);
       // 更新数据
       commit("CREATE", resp || []);
     });

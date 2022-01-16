@@ -1,7 +1,6 @@
 // imports
 import { getWorkspaces } from "@/api/workspace";
-import todos from "./todos";
-import user from "./user";
+import store from "..";
 
 // initial state
 const state = () => ({
@@ -25,16 +24,17 @@ const mutations = {
 
 // actions
 const actions = {
-  async changeWorkspace({ state, commit }, { workspaceId }) {
+  async changeWorkspace({ dispatch }, { workspaceId }) {
     // 更新用户的 workspaceId
-    await user.actions.changeWorkspace({ state, commit }, workspaceId);
+    await store.dispatch("user/changeWorkspace", workspaceId);
 
     // 更新 Todos
-    todos.actions.getTodos({ state, commit });
+    await store.dispatch("todos/getTodos");
   },
 
   // 获取用户的 workspaces
-  list({ state, commit }) {
+  list({ commit }) {
+    console.log("workspace/list actions...");
     // 获取 workspaces
     getWorkspaces().then((resp) => {
       commit("SET_WORKSPACES", resp);

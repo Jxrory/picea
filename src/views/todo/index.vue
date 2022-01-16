@@ -1,22 +1,27 @@
 <template>
-  <div class="todo-main-box">
-    <Quadrant
-      v-for="quadrandConfig in quadrandsConfig"
-      :key="quadrandConfig.label"
-      :quadrandConfig="quadrandConfig"
-    ></Quadrant>
+  <div class="todo-main">
+    <Header />
+    <div class="todo-main-box">
+      <Quadrant
+        v-for="quadrandConfig in quadrandsConfig"
+        :key="quadrandConfig.label"
+        :quadrandConfig="quadrandConfig"
+      ></Quadrant>
+    </div>
   </div>
 </template>
 
 <script>
 import store from "@/store";
 import Quadrant from "./quadrant.vue";
+import Header from "./header.vue";
 
 export default {
   name: "TODO",
 
   components: {
     Quadrant,
+    Header,
   },
 
   data() {
@@ -37,6 +42,14 @@ export default {
 @import "~@/styles/mixin.scss";
 // 引入 iconfont 字体
 @import "~@/styles/iconfont.css";
+
+.todo-main {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: 35px 1fr;
+}
 
 .todo-main-box {
   @include full-all;

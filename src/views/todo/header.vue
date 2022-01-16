@@ -25,7 +25,7 @@
 import store from "@/store";
 
 export default {
-  name: "LayoutHeader",
+  name: "Header",
 
   data() {
     return {};
