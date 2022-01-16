@@ -25,3 +25,11 @@ export function getUserInfo(uid) {
     url: "/users/" + uid,
   });
 }
+
+export function updateUserInfo(user) {
+  return request({
+    method: "PUT",
+    url: "/users/" + user.uid,
+    data: user,
+  });
+}

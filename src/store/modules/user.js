@@ -1,7 +1,7 @@
 // imports
 import jwtDecode from "jwt-decode";
 
-import { login, getUserInfo } from "@/api/user";
+import { login, getUserInfo, updateUserInfo } from "@/api/user";
 
 // initial state
 const state = () => ({
@@ -71,14 +71,8 @@ const actions = {
    * 登录成功 Hook
    */
   async loginSuccessHook({ state, commit }) {
-    // 获取用户Id
-    const uid = actions.getUserId();
-
     // 获取用户信息
-    console.log("loginSuccessHook getUserInfo uid: ", uid);
-    const user = await getUserInfo(uid);
-    console.log("loginSuccessHook getUserInfo user: ", user);
-    commit("SET_USER", user);
+    await actions.getUser({ state, commit });
   },
 
   /**
@@ -105,7 +99,7 @@ const actions = {
    * @returns String 用户Id
    */
   getUserId({ state, commit }) {
-    let userId = getters.userId(state);
+    const userId = getters.userId(state);
     if (userId && userId !== "") {
       return userId;
     }
@@ -117,6 +111,44 @@ const actions = {
     );
     const content = jwtDecode(token);
     return content.aud;
+  },
+
+  /**
+   * 获取用户信息, 如果 store 用户不存在回去后台刷新获取
+   *
+   * @returns user info
+   */
+  async getUser({ state, commit }) {
+    const user = state.user;
+    if (user.uid && user.uid !== "") {
+      return user;
+    }
+
+    const uid = actions.getUserId({ state, commit });
+
+    const userResp = await getUserInfo(uid);
+    console.log("loginSuccessHook getUserInfo user: ", userResp);
+    commit("SET_USER", userResp);
+    return state.user;
+  },
+
+  /**
+   * 改变工作空间
+   *
+   * @param {string} workspaceId 工作空间Id
+   */
+  async changeWorkspace({ state, commit }, workspaceId) {
+    const user = await actions.getUser({ state, commit });
+    const userUpdate = JSON.parse(JSON.stringify(user));
+    userUpdate.workspaceId = workspaceId;
+    console.log("changeWorkspace user:", state);
+    try {
+      const resp = await updateUserInfo(userUpdate);
+      console.log("updateUserInfo resp:", resp);
+      commit("SET_USER", userUpdate);
+    } catch (error) {
+      console.log("store user changeWorkspace", error);
+    }
   },
 };
 

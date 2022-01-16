@@ -3,6 +3,7 @@ import { createStore, createLogger } from "vuex";
 import config from "./modules/config";
 import user from "./modules/user";
 import todos from "./modules/todos";
+import workspace from "./modules/workspace";
 
 // // https://webpack.js.org/guides/dependency-management/#requirecontext
 // const modulesFiles = require.context("./modules", true, /\.js$/);
@@ -24,6 +25,7 @@ export default createStore({
     config,
     user,
     todos,
+    workspace,
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],

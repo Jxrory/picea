@@ -288,7 +288,7 @@ const actions = {
   // 获取 todos
   getTodos: ({ commit }) => {
     const params = {
-      workspace: store.getters["user/workspace"],
+      workspaceId: store.getters["user/workspace"],
       includeCompleted: true,
     };
     // 请求后端数据
