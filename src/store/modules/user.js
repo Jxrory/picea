@@ -3,6 +3,9 @@ import jwtDecode from "jwt-decode";
 
 import { login, getUserInfo, updateUserInfo } from "@/api/user";
 
+// token 获取失败需要跳转到登录页面
+import router from "@/router";
+
 // initial state
 const state = () => ({
   /* 用户信息 */
@@ -14,9 +17,6 @@ const state = () => ({
 
 // getters
 const getters = {
-  workspace(state) {
-    return state.user.workspaceId;
-  },
   user(state) {
     return state.user;
   },
@@ -50,8 +50,6 @@ const actions = {
   async login({ state, commit }, { username, password }) {
     try {
       const resp = await login({ username, password });
-
-      console.log("store actions login resp: ", resp);
 
       if (resp.token != "") {
         commit("SET_TOKEN", resp.token);
@@ -89,12 +87,19 @@ const actions = {
 
     const token = localStorage.getItem("AuthorizationToken");
 
-    commit("SET_TOKEN", token || "");
-    return prefixToken + state.token;
+    if (token && token !== "") {
+      commit("SET_TOKEN", token || "");
+      return prefixToken + state.token;
+    }
+
+    // 跳转至登录页面
+    router.replace("/login");
   },
 
   /**
    * 获取用户Id
+   *  1. store user getters 中获取, 如果存在就返回
+   *  2. 从 token 获取
    *
    * @returns String 用户Id
    */
@@ -114,7 +119,7 @@ const actions = {
   },
 
   /**
-   * 获取用户信息, 如果 store 用户不存在回去后台刷新获取
+   * 获取用户信息, 如果 store 用户不存在使用token从后台获取
    *
    * @returns user info
    */
@@ -127,7 +132,6 @@ const actions = {
     const uid = actions.getUserId({ state, commit });
 
     const userResp = await getUserInfo(uid);
-    console.log("loginSuccessHook getUserInfo user: ", userResp);
     commit("SET_USER", userResp);
     return state.user;
   },
@@ -139,12 +143,11 @@ const actions = {
    */
   async changeWorkspace({ state, commit }, workspaceId) {
     const user = await actions.getUser({ state, commit });
+
     const userUpdate = JSON.parse(JSON.stringify(user));
     userUpdate.workspaceId = workspaceId;
-    console.log("changeWorkspace user:", state);
     try {
-      const resp = await updateUserInfo(userUpdate);
-      console.log("updateUserInfo resp:", resp);
+      await updateUserInfo(userUpdate);
       commit("SET_USER", userUpdate);
     } catch (error) {
       console.log("store user changeWorkspace", error);

@@ -154,13 +154,15 @@ import {
   updateTodoItem,
   getToday,
 } from "@/api/todos";
-import store from "..";
+import user from "./user";
 
 // actions
 const actions = {
   ///////////////// todo list /////////////////
-  // 在象限头部添加的简单 TODO item FIXME(jx)
-  createSimple({ state, commit }, { label, title }) {
+  // 在象限头部添加的简单 TODO item
+  async createSimple({ state, commit }, { label, title }) {
+    const u = await user.actions.getUser({ state, commit });
+
     const nowTime = new Date().toJSON();
     const todoItem = {
       priority: label2priority(label),
@@ -170,6 +172,7 @@ const actions = {
       related: "START",
       clazz: "PRIVATE",
       geo: "",
+      workspaceId: u.workspaceId,
 
       dtstart: nowTime,
       // completed: "",
@@ -286,9 +289,10 @@ const actions = {
   },
 
   // 获取 todos
-  getTodos: ({ commit }) => {
+  getTodos: ({ state, commit }) => {
+    const u = user.actions.getUser({ state, commit });
     const params = {
-      workspaceId: store.getters["user/workspace"],
+      workspaceId: u.workspaceId,
       includeCompleted: true,
     };
     // 请求后端数据
