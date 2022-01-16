@@ -125,7 +125,7 @@ const actions = {
    */
   async getUser({ state, commit }) {
     const user = state.user;
-    if (user.uid && user.uid !== "") {
+    if (user && user.uid && user.uid !== "") {
       return user;
     }
 
