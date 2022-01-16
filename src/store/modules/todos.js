@@ -154,6 +154,7 @@ import {
   updateTodoItem,
   getToday,
 } from "@/api/todos";
+import store from "..";
 
 // actions
 const actions = {
@@ -286,8 +287,12 @@ const actions = {
 
   // 获取 todos
   getTodos: ({ commit }) => {
+    const params = {
+      workspace: store.getters["user/workspace"],
+      includeCompleted: true,
+    };
     // 请求后端数据
-    getToday({ includeCompleted: true }).then((resp) => {
+    getToday(params).then((resp) => {
       console.log(resp);
       // 更新数据
       commit("CREATE", resp || []);

@@ -2,14 +2,20 @@
   <router-view />
 
   <el-dialog v-model="showSeachCenter" :show-close="false" width="50%">
-    show search center
+    <SearchCenter />
   </el-dialog>
 </template>
 
 <script>
 import store from "@/store";
+import SearchCenter from "./center.vue";
+
 export default {
   name: "Layout",
+
+  components: {
+    SearchCenter,
+  },
 
   computed: {
     showSeachCenter: {

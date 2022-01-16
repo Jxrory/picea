@@ -5,9 +5,6 @@ import { login, getUserInfo } from "@/api/user";
 
 // initial state
 const state = () => ({
-  /* 当前的工作空间 */
-  workspace: "DEFAULT",
-
   /* 用户信息 */
   user: {},
 
@@ -18,10 +15,13 @@ const state = () => ({
 // getters
 const getters = {
   workspace(state) {
-    return state.workspace;
+    return state.user.workspaceId;
   },
   user(state) {
     return state.user;
+  },
+  userId(state) {
+    return state.user.uid;
   },
 };
 
@@ -71,14 +71,8 @@ const actions = {
    * 登录成功 Hook
    */
   async loginSuccessHook({ state, commit }) {
-    // 获取 token 解析出 用户Id
-    const token = actions.getBearerToken(
-      { state, commit },
-      { isNotBearer: true }
-    );
-    const content = jwtDecode(token);
-    console.log("loginSuccessHook jwtDecode contetn: ", content);
-    const uid = content.aud;
+    // 获取用户Id
+    const uid = actions.getUserId();
 
     // 获取用户信息
     console.log("loginSuccessHook getUserInfo uid: ", uid);
@@ -103,6 +97,26 @@ const actions = {
 
     commit("SET_TOKEN", token || "");
     return prefixToken + state.token;
+  },
+
+  /**
+   * 获取用户Id
+   *
+   * @returns String 用户Id
+   */
+  getUserId({ state, commit }) {
+    let userId = getters.userId(state);
+    if (userId && userId !== "") {
+      return userId;
+    }
+
+    // 获取 token 解析出 用户Id
+    const token = actions.getBearerToken(
+      { state, commit },
+      { isNotBearer: true }
+    );
+    const content = jwtDecode(token);
+    return content.aud;
   },
 };
 
